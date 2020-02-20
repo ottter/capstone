@@ -1,6 +1,7 @@
 from flask import redirect, url_for, render_template, request, flash
-from capstone.forms import RegistrationForm, LoginForm
+from capstone.forms import RegistrationForm, EditProfileForm, LoginForm
 from capstone.models import User
+from datetime import datetime
 from capstone import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
@@ -53,6 +54,31 @@ app.add_url_rule("/logout", 'logout', logout)
 
 
 @login_required
-def account():
-    return render_template('account.html', title='Account')
-app.add_url_rule("/account", 'account', account)
+def account(stu_id):
+    user = User.query.filter_by(stu_id=stu_id).first_or_404()
+    return render_template('account.html', user=user, title='Account')
+app.add_url_rule("/user/<stu_id>", 'account', account)
+
+
+@login_required
+def edit_profile():
+    form = EditProfileForm()
+    if form.validate_on_submit():
+        current_user.username = form.username.data
+        current_user.about_me = form.about_me.data
+        db.session.commit()
+        flash('Your changes have been saved.', 'success')
+        return redirect(url_for('account', stu_id=current_user.stu_id))
+    elif request.method == 'GET':
+        form.username.data = current_user.username
+        form.about_me.data = current_user.about_me
+    # return redirect(url_for('account', stu_id=current_user.stu_id))
+    return render_template('edit_profile.html', title='Edit Profile', form=form)
+app.add_url_rule("/user/edit_profile", 'edit_profile', edit_profile, methods=['GET', 'POST'])
+
+
+@app.before_request
+def before_request():
+    if current_user.is_authenticated:
+        current_user.last_seen = datetime.utcnow()
+        db.session.commit()
