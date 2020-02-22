@@ -5,8 +5,7 @@ testing viability of flask for capstone project
 
 1. `cd` in to the main directory
 2. `pip install -r requirements.txt`
-3. `py run.py` (or run it in your text editor)
-4. Navigate to the given URL (likely `http://127.0.0.1:5000/`)
+3. `flask run`
 
 ![Log In](http://puu.sh/F72nr/5fa4e15d63.png)
 
