@@ -1,7 +1,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, BooleanField, IntegerField, TextAreaField
 from wtforms.validators import DataRequired, Length, Email, EqualTo, NumberRange, ValidationError
-from capstone.models import User
+from app.models import User
 
 
 class RegistrationForm(FlaskForm):

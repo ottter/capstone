@@ -4,8 +4,15 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = '2h80dh28ddh2hdi2Djdd2jhdjdDfhsff'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///site.db'
+
+environment = app.config["ENV"]
+if environment == "production":
+    app.config.from_object("config.ProductionConfig")
+elif environment == "testing":
+    app.config.from_object("config.TestingConfig")
+else:
+    app.config.from_object("config.DevelopmentConfig")
+
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 
@@ -15,7 +22,7 @@ login_manager.login_message_category = 'info'
 
 @app.before_first_request
 def create_tables():
-    from capstone.models import User
+    from app.models import User
     db.create_all()
 
-from capstone import routes
+from app import routes

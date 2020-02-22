@@ -1,8 +1,8 @@
 from flask import redirect, url_for, render_template, request, flash
-from capstone.forms import RegistrationForm, EditProfileForm, LoginForm
-from capstone.models import User
+from app.forms import RegistrationForm, EditProfileForm, LoginForm
+from app.models import User
 from datetime import datetime
-from capstone import app, db, bcrypt
+from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
 
 
