@@ -2,6 +2,7 @@ flask
 flask-sqlalchemy
 flask-bcrypt
 flask-login
+flask-moment
 flask-wtf
 gunicorn
 wtforms

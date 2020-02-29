@@ -15,7 +15,7 @@ class User(db.Model, UserMixin):
     stu_id = db.Column(db.String(9), unique=True, nullable=False)
     email = db.Column(db.String(60), unique=True, nullable=False)
     about_me = db.Column(db.String(140))
-    last_seen = db.Column(db.DateTime, default=datetime.utcnow)
+    last_seen = db.Column(db.DateTime, default=datetime.today())
     password = db.Column(db.String(30), nullable=False)
 
     def __repr__(self):
