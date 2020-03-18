@@ -6,3 +6,5 @@ flask-moment
 flask-wtf
 gunicorn
 wtforms
+secrets
+Pillow

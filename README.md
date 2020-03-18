@@ -7,7 +7,6 @@ This project utilizes:
 * Heroku
 * Gunicorn
 * Bcrypt
-* Gravatar
 
 # How to run
 

@@ -7,7 +7,7 @@
     <div class="inner">
         <div class="content">
             <h1>Edit Profile</h1>
-            <form action="" method="post">
+            <form action="" method="post" enctype="multipart/form-data">
                 {{ form.hidden_tag() }}
                 <p>
                     {{ form.username.label }}
@@ -18,10 +18,19 @@
                 </p>
                 <p>
                     {{ form.about_me.label }}
-                    {{ form.about_me(cols=50, rows=4) }}
+                    {{ form.about_me(cols=50, rows=4, maxcols=50) }}
                     {% for error in form.about_me.errors %}
                     <span style="color: #86378B;">[{{ error }}]</span>
                     {% endfor %}
+                </p>
+                <p>
+                    {{ form.picture.label() }}
+                    {{ form.picture(class="form-control-file") }}
+                    {% if form.picture.errors %}
+                        {% for error in form.picture.errors %}
+                        <span class="text-danger" style="color: #86378B;">[{{ error }}]</span><br>
+                    {% endfor %}
+                    {% endif %}
                 </p>
                 <p>{{ form.submit() }}</p>
             </form>

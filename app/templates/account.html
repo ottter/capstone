@@ -10,21 +10,45 @@
 {% block content %}
     <div class="inner">
         <div class="content">
-            <table>
-                <tr valign="top">
-                    <td><h1>{{ user.username }}</h1>
-                        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}
-                        {% if user.last_seen %}<p>Last seen on: {{  moment(user.last_seen).format('LLL') }}</p>{% endif %}
-                        {% if user == current_user %}
-                            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>
-                        {% endif %}
+            <table valign="top">
+                <tr align="left">
+                     <td valign="top"><h1>{{ user.username }}</h1>
+                        <p>
+                            {% if user.email %}
+                                <b>Email: </b>  <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+                                <i class="icon fa-paper-plane"></i>
+                            {% endif %}<br>
+                            {% if user.about_me %}<b>About: </b>  {{ user.about_me }}{% endif %}<br>
+                            {% if user.last_seen %}<b>Last seen on: </b>{{  moment(user.last_seen).format('LLL') }}{% endif %}
+                            {% if user == current_user %}
+                                <br><br><a href="{{ url_for('edit_profile') }}">Edit your profile</a>
+                            {% endif %}
+                        </p>
                     </td>
-                    <td><img src="{{ user.avatar(128) }}"></td>
+                    <td align="center bottom">
+                        <img src="{{ image_file }}">
+                    </td>
                 </tr>
             </table>
+{#            <table>#}
+{#                <tr valign="top">#}
+{#                    <td><h1>{{ user.username }}</h1>#}
+{#                        {% if user.about_me %}<p>{{ user.email }}</p>{% endif %}#}
+{#                        {% if user.about_me %}<p>{{ user.about_me }}</p>{% endif %}#}
+{#                        {% if user.last_seen %}<p>Last seen on: {{  moment(user.last_seen).format('LLL') }}</p>{% endif %}#}
+{#                    </td>#}
+{#                    <td align="center">#}
+{#                        <img src="{{ image_file }}">#}
+{#                        {% if user == current_user %}#}
+{#                            <p><a href="{{ url_for('edit_profile') }}">Edit your profile</a></p>#}
+{#                        {% endif %}#}
+{#                    </td>#}
+{#                </tr>#}
+{#            </table>#}
             <hr>
             <form action="#" method="POST">
                 <input type="email" name="email" placeholder="Enter Email" value="{{ email if email }}" />
+                <br>
                 <input type="submit" value="search" />
             </form>
         </div>
