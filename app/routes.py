@@ -4,8 +4,8 @@ from app.models import User
 from datetime import datetime
 from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
-import secrets
 from PIL import Image
+import binascii
 import os
 
 
@@ -65,7 +65,7 @@ app.add_url_rule("/user/<stu_id>", 'account', account)
 
 
 def save_picture(form_picture): # save and rename uploaded profile picture to random hex string
-    random_hex = secrets.token_hex(8)
+    random_hex = binascii.b2a_hex(os.urandom(8))
     _, f_ext = os.path.splitext(form_picture.filename)
     picture_filename = random_hex + f_ext
     picture_path = os.path.join(app.root_path, 'static/images/profile_pics', picture_filename)
