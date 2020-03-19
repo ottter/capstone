@@ -1,6 +1,6 @@
-from flask import redirect, url_for, render_template, request, flash
-from app.forms import RegistrationForm, EditProfileForm, LoginForm
-from app.models import User
+from flask import redirect, url_for, render_template, request, flash, abort
+from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm
+from app.models import User, Post
 from datetime import datetime
 from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
@@ -17,6 +17,17 @@ app.add_url_rule('/', 'home', home)
 def about():
     return render_template('about.html', title='About')
 app.add_url_rule('/about', 'about', about)
+
+
+def classes():
+    return render_template('class.html', title='Class')
+app.add_url_rule('/class', 'class', classes)
+
+
+def news():
+    posts = Post.query.all()
+    return render_template('news.html', title='News', posts=posts)
+app.add_url_rule('/news', 'news', news)
 
 
 def register():
@@ -74,7 +85,6 @@ def save_picture(form_picture): # save and rename uploaded profile picture to ra
     i = Image.open(form_picture)
     i.thumbnail(output_size)
     i.save(picture_path)
-
     return picture_filename
 
 @login_required
@@ -95,6 +105,56 @@ def edit_profile():
     # return redirect(url_for('account', stu_id=current_user.stu_id))
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 app.add_url_rule("/user/edit_profile", 'edit_profile', edit_profile, methods=['GET', 'POST'])
+
+
+@login_required
+def new_post():
+    form = PostForm()
+    if form.validate_on_submit():
+        post = Post(title=form.title.data, content=form.content.data, author=current_user)
+        db.session.add(post)
+        db.session.commit()
+        flash('Your post has been created!', 'success')
+        return redirect(url_for('news'))
+    return render_template('create_post.html', title='New Post', form=form, legend='New Post')
+app.add_url_rule('/news/post/new', 'new_post', new_post, methods=['GET', 'POST'])
+
+
+def post(post_id):
+    post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=post.title, post=post)
+app.add_url_rule('/news/post/<int:post_id>', 'post', post)
+
+
+@login_required
+def update_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    form = PostForm()
+    if form.validate_on_submit():
+        post.title = form.title.data
+        post.content = form.content.data
+        db.session.commit()
+        flash('Your post has been updated!', 'success')
+        return redirect(url_for('post', post_id=post.id))
+    elif request.method == 'GET':
+        form.title.data = post.title
+        form.content.data = post.content
+    return render_template('create_post.html', title='Update Post', form=form, legend='Update Post')
+app.add_url_rule('/news/post/<int:post_id>/update', 'update_post', update_post, methods=['GET', 'POST'])
+
+
+@login_required
+def delete_post(post_id):
+    post = Post.query.get_or_404(post_id)
+    if post.author != current_user:
+        abort(403)
+    db.session.delete(post)
+    db.session.commit()
+    flash('Your post has been deleted!', 'success')
+    return redirect(url_for('news'))
+app.add_url_rule('/news/post/<int:post_id>/delete', 'delete_post', delete_post, methods=['POST'])
 
 
 @app.before_request

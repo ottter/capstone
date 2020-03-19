@@ -5,7 +5,7 @@
 		<meta charset="utf-8" />
         <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-		<link rel="stylesheet" href="../static/assets/css/main.css" />
+		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
 	</head>
 	<body class="is-preload">
 
@@ -23,9 +23,11 @@
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
                 <li><a href="#">Latest Notes</a></li>
-                <li><a href="#">Latest Classes</a></li>
-                <li><a href="#">Announcements</a></li>
+                <li><a href="{{ url_for('class') }}">Latest Classes</a></li>
+                <li><a href="{{ url_for('news') }}">Announcements</a></li>
                 {% if current_user.is_authenticated %}
+                    {#TODO: Make this an admin only option#}
+                    <li><a href="{{ url_for('new_post') }}">Create Post</a></li>
                     <li><a href="{{ url_for('account', stu_id=current_user.stu_id) }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}
@@ -87,11 +89,11 @@
         </footer>
 
         <!-- Scripts -->
-        <script src="../static/assets/js/jquery.min.js"></script>
-        <script src="../static/assets/js/browser.min.js"></script>
-        <script src="../static/assets/js/breakpoints.min.js"></script>
-        <script src="../static/assets/js/util.js"></script>
-        <script src="../static/assets/js/main.js"></script>
-        <script src="../static/assets/js/moment.js"></script>
+        <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/moment.js') }}"></script>
 </body>
 </html>

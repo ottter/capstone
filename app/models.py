@@ -1,7 +1,6 @@
 from app import db, login_manager
 from flask_login import UserMixin
 from datetime import datetime
-from hashlib import md5
 
 
 @login_manager.user_loader
@@ -18,10 +17,27 @@ class User(db.Model, UserMixin):
     about_me = db.Column(db.String(250))
     last_seen = db.Column(db.DateTime, default=datetime.today())
     password = db.Column(db.String(30), nullable=False)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
     def __repr__(self):
-        return f"User('{self.username}', '{self.email}', '{self.image_file}')"
+        return f"User('{self.username}', '{self.email}', '{self.stu_id}')"
 
-    def avatar(self, size):
-        digest = md5(self.email.lower().encode('utf-8')).hexdigest()
-        return f'https://www.gravatar.com/avatar/{digest}?d=identicon&s={size}'
+
+class Post(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.title}', '{self.date_posted}')"
+
+
+class ClassList(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    course_section = db.Column(db.String(10), unique=True, nullable=False)
+    course_name = db.Column(db.String(30), unique=True, nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.course_section}', '{self.course_name}')"

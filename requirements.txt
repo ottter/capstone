@@ -3,6 +3,7 @@ flask-sqlalchemy
 flask-bcrypt
 flask-login
 flask-moment
+flask-table
 flask-wtf
 gunicorn
 wtforms
