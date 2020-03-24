@@ -24,7 +24,7 @@ login_manager.login_message_category = 'info'
 
 @app.before_first_request
 def create_tables():
-    from app.models import User
+    from app.models import User, Post, Role, UserRoles
     db.create_all()
 
 from app import routes

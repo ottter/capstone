@@ -1,11 +1,12 @@
-from app import db, login_manager
-from flask_login import UserMixin
+from app import db, login_manager, app
+# from flask_login import UserMixin
+from flask_user import UserManager, UserMixin
 from datetime import datetime
 
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return User.query.get(user_id)
 
 
 class User(db.Model, UserMixin):
@@ -19,9 +20,30 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(30), nullable=False)
     posts = db.relationship('Post', backref='author', lazy=True)
 
+    posts = db.relationship('Post', backref='author', lazy=True)
+    roles = db.relationship('Role', secondary='user_roles')
+
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.stu_id}')"
 
+user_manager = UserManager(app, db, User)
+
+class Role(db.Model):
+    __tablename__ = 'roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    name = db.Column(db.String(50), unique=True)
+
+    def __repr__(self):
+        return f"User('{self.id}', '{self.name}')"
+
+class UserRoles(db.Model):
+    __tablename__ = 'user_roles'
+    id = db.Column(db.Integer(), primary_key=True)
+    user_id = db.Column(db.Integer(), db.ForeignKey('user.id', ondelete='CASCADE'))
+    role_id = db.Column(db.Integer(), db.ForeignKey('roles.id', ondelete='CASCADE'))
+
+    def __repr__(self):
+        return f"User('{self.user_id}', '{self.role_id}')"
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)

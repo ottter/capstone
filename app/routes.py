@@ -4,10 +4,12 @@ from app.models import User, Post
 from datetime import datetime
 from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
+from flask_user import roles_required
 from PIL import Image
 import binascii
 import os
 
+user = 'james' #TODO: placeholder
 
 def home():
     return render_template('home.html')
@@ -107,7 +109,7 @@ def edit_profile():
 app.add_url_rule("/user/edit_profile", 'edit_profile', edit_profile, methods=['GET', 'POST'])
 
 
-@login_required
+@roles_required('admin')
 def new_post():
     form = PostForm()
     if form.validate_on_submit():
@@ -122,15 +124,16 @@ app.add_url_rule('/news/post/new', 'new_post', new_post, methods=['GET', 'POST']
 
 def post(post_id):
     post = Post.query.get_or_404(post_id)
+    # TODO: Key to get admin/roles working is here (i think)
     return render_template('post.html', title=post.title, post=post)
 app.add_url_rule('/news/post/<int:post_id>', 'post', post)
 
 
-@login_required
+@roles_required('admin')
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        abort(403)
+    # if post.author != current_user:
+    #     abort(403)
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -145,11 +148,11 @@ def update_post(post_id):
 app.add_url_rule('/news/post/<int:post_id>/update', 'update_post', update_post, methods=['GET', 'POST'])
 
 
-@login_required
+@roles_required('admin')
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    if post.author != current_user:
-        abort(403)
+    # if post.author != current_user:
+    #     abort(403)
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
