@@ -21,8 +21,9 @@
                             {% if user.about_me %}<b>About: </b>  {{ user.about_me }}{% endif %}<br>
                             {% if user.last_seen %}<b>Last seen on: </b>{{  moment(user.last_seen).format('LLL') }}{% endif %}
                             {% if current_user.is_authenticated %}
-{# Changed from "if user == current_user. Cause of error: UserMixin in flask-user & flask-login #}
-                                <br><br><a href="{{ url_for('edit_profile') }}">Edit your profile</a>
+                                {% if user.stu_id == current_user.stu_id %}
+                                    <br><br><a href="{{ url_for('edit_profile') }}">Edit your profile</a>
+                                {% endif %}
                             {% endif %}
                         </p>
                     </td>

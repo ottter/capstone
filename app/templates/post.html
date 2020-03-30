@@ -7,28 +7,33 @@
 {% endblock %}
 
 {% block content %}
+    <section id="main" class="wrapper">
     <div class="inner">
         <div class="content">
+        <a class="logo" href="{{ url_for('news') }}"><i class="fa fa-arrow-left"></i> Back </a>
             <article class="media content-section">
             <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/profile_pics/' + post.author.image_file) }}">
                 <div class="media-body">
                     <div class="article-metadata">
-                        <a class="mr-2" href="#">{{ post.author.username }}</a>
+                        <a class="mr-2" href="{{ url_for('account', stu_id=post.author.stu_id) }}">{{ post.author.username }}</a>
+{# TODO: Format to have testimonials link to premade profiles #}
                         <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                     </div>
                 <h3 class="article-title">{{ post.title }}</h3>
                 <p class="article-content">{{ post.content }}</p>
                 </div>
             </article>
-        {% if post.author == current_user %}
-            <h5>Edit Post?</h5>
-            <form class="edit-post-button" action="{{ url_for('update_post', post_id=post.id) }}">
-                <input type="submit" value="Update">
-            </form>
-            <form class="edit-post-button" action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
-                <input type="submit" value="Delete">
-            </form>
+        {% if current_user.is_authenticated %}   {# Checks if user is logged in #}
+            {% if post.author.stu_id == current_user.stu_id %}  {# Checks if user is post author #}
+                <form class="edit-post-button" action="{{ url_for('update_post', post_id=post.id) }}">
+                    <input type="submit" value="Update Post">
+                </form>
+                <form class="edit-post-button" action="{{ url_for('delete_post', post_id=post.id) }}" method="POST">
+                    <input type="submit" value="Delete Post">
+                </form>
+            {% endif %}
         {% endif %}
         </div>
     </div>
+    </section>
 {% endblock content %}

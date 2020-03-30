@@ -1,6 +1,6 @@
 from flask import redirect, url_for, render_template, request, flash, abort
 from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm
-from app.models import User, Post
+from app.models import User, Post, Role, UserRoles
 from datetime import datetime
 from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
@@ -9,7 +9,22 @@ from PIL import Image
 import binascii
 import os
 
-user = 'james' #TODO: placeholder
+# Create my default account and assign it admin role (if not exist)
+if not User.query.filter_by(stu_id='983204830').first():
+    if not User.query.filter_by(email='james@mga.edu').first():
+        hashed_password = bcrypt.generate_password_hash('password').decode('utf-8')
+        default_acc = User(username='James Cross', stu_id='983204830', email='james@mga.edu', password=hashed_password)
+        db.session.add(default_acc)
+        db.session.commit()
+
+        role = Role.query.filter_by(name="admin").first()
+        if role is None:
+            role = Role(name="admin")
+            db.session.add(role)
+            db.session.commit()
+        user_role = UserRoles(user_id=default_acc.id, role_id=role.id)
+        db.session.add(user_role)
+        db.session.commit()
 
 def home():
     return render_template('home.html')
@@ -84,9 +99,9 @@ def save_picture(form_picture): # save and rename uploaded profile picture to ra
     picture_path = os.path.join(app.root_path, 'static/images/profile_pics', picture_filename)
 
     output_size = (250, 250)    # resize the image before saving it on the file system
-    i = Image.open(form_picture)
-    i.thumbnail(output_size)
-    i.save(picture_path)
+    img = Image.open(form_picture)
+    img.thumbnail(output_size)
+    img.save(picture_path)
     return picture_filename
 
 @login_required
@@ -132,8 +147,6 @@ app.add_url_rule('/news/post/<int:post_id>', 'post', post)
 @roles_required('admin')
 def update_post(post_id):
     post = Post.query.get_or_404(post_id)
-    # if post.author != current_user:
-    #     abort(403)
     form = PostForm()
     if form.validate_on_submit():
         post.title = form.title.data
@@ -151,8 +164,6 @@ app.add_url_rule('/news/post/<int:post_id>/update', 'update_post', update_post, 
 @roles_required('admin')
 def delete_post(post_id):
     post = Post.query.get_or_404(post_id)
-    # if post.author != current_user:
-    #     abort(403)
     db.session.delete(post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')

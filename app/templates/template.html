@@ -26,8 +26,9 @@
                 <li><a href="{{ url_for('class') }}">Latest Classes</a></li>
                 <li><a href="{{ url_for('news') }}">Announcements</a></li>
                 {% if current_user.is_authenticated %}
-                    {#TODO: Make this an admin only option#}
-                    <li><a href="{{ url_for('new_post') }}">Create Announcement</a></li>
+                    {% if current_user.has_role('admin') %}
+                        <li><a href="{{ url_for('new_post') }}">Create Announcement</a></li>
+                    {% endif %}
                     <li><a href="{{ url_for('account', stu_id=current_user.stu_id) }}">Profile</a></li>
                     <li><a href="{{ url_for('logout') }}">Logout</a></li>
                 {% else %}

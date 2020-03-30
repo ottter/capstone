@@ -1,5 +1,4 @@
 from app import db, login_manager, app
-# from flask_login import UserMixin
 from flask_user import UserManager, UserMixin
 from datetime import datetime
 
@@ -18,10 +17,16 @@ class User(db.Model, UserMixin):
     about_me = db.Column(db.String(250))
     last_seen = db.Column(db.DateTime, default=datetime.today())
     password = db.Column(db.String(30), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
 
     posts = db.relationship('Post', backref='author', lazy=True)
-    roles = db.relationship('Role', secondary='user_roles')
+    roles = db.relationship('Role', secondary='user_roles',
+                            backref=db.backref('users', lazy='dynamic'))
+
+    def has_role(self, name):
+        for role in self.roles:
+            if role.name == name:
+                return True
+            return False
 
     def __repr__(self):
         return f"User('{self.username}', '{self.email}', '{self.stu_id}')"
@@ -31,7 +36,7 @@ user_manager = UserManager(app, db, User)
 class Role(db.Model):
     __tablename__ = 'roles'
     id = db.Column(db.Integer(), primary_key=True)
-    name = db.Column(db.String(50), unique=True)
+    name = db.Column(db.String(50), unique=False)
 
     def __repr__(self):
         return f"User('{self.id}', '{self.name}')"
@@ -44,6 +49,7 @@ class UserRoles(db.Model):
 
     def __repr__(self):
         return f"User('{self.user_id}', '{self.role_id}')"
+
 
 class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
