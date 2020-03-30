@@ -12,12 +12,12 @@
         <div class="content">
         <a class="logo" href="{{ url_for('news') }}"><i class="fa fa-arrow-left"></i> Back </a>
             <article class="media content-section">
-            <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/profile_pics/' + post.author.image_file) }}">
                 <div class="media-body">
                     <div class="article-metadata">
+                        <img class="rounded-circle article-img" src="{{ url_for('static', filename='images/profile_pics/' + post.author.image_file) }}">
                         <a class="mr-2" href="{{ url_for('account', stu_id=post.author.stu_id) }}">{{ post.author.username }}</a>
 {# TODO: Format to have testimonials link to premade profiles #}
-                        <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
+                        | <small class="text-muted">{{ post.date_posted.strftime('%Y-%m-%d') }}</small>
                     </div>
                 <h3 class="article-title">{{ post.title }}</h3>
                 <p class="article-content">{{ post.content }}</p>

@@ -1,4 +1,4 @@
-from flask import redirect, url_for, render_template, request, flash, abort
+from flask import redirect, url_for, render_template, request, flash
 from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm
 from app.models import User, Post, Role, UserRoles
 from datetime import datetime
@@ -119,7 +119,6 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
-    # return redirect(url_for('account', stu_id=current_user.stu_id))
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 app.add_url_rule("/user/edit_profile", 'edit_profile', edit_profile, methods=['GET', 'POST'])
 
@@ -138,9 +137,8 @@ app.add_url_rule('/news/post/new', 'new_post', new_post, methods=['GET', 'POST']
 
 
 def post(post_id):
-    post = Post.query.get_or_404(post_id)
-    # TODO: Key to get admin/roles working is here (i think)
-    return render_template('post.html', title=post.title, post=post)
+    create_post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=create_post.title, post=create_post)
 app.add_url_rule('/news/post/<int:post_id>', 'post', post)
 
 
@@ -163,8 +161,8 @@ app.add_url_rule('/news/post/<int:post_id>/update', 'update_post', update_post, 
 
 @roles_required('admin')
 def delete_post(post_id):
-    post = Post.query.get_or_404(post_id)
-    db.session.delete(post)
+    del_post = Post.query.get_or_404(post_id)
+    db.session.delete(del_post)
     db.session.commit()
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('news'))
