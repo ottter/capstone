@@ -59,13 +59,14 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
     def __repr__(self):
-        return f"User('{self.title}', '{self.date_posted}')"
+        return f"Post('{self.title}', '{self.date_posted}')"
 
 
 class ClassList(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    course_section = db.Column(db.String(10), unique=True, nullable=False)
+    program = db.Column(db.String(4), unique=True, nullable=False)
+    course_id = db.Column(db.Integer(), unique=False, nullable=False)
     course_name = db.Column(db.String(30), unique=True, nullable=False)
 
     def __repr__(self):
-        return f"User('{self.course_section}', '{self.course_name}')"
+        return f"[{self.program}, {self.course_id}, {self.course_name}]"

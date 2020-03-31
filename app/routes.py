@@ -1,6 +1,6 @@
 from flask import redirect, url_for, render_template, request, flash
-from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm
-from app.models import User, Post, Role, UserRoles
+from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm
+from app.models import User, Post, Role, UserRoles, ClassList
 from datetime import datetime
 from app import app, db, bcrypt
 from flask_login import login_user, current_user, logout_user, login_required
@@ -37,12 +37,24 @@ app.add_url_rule('/about', 'about', about)
 
 
 def classes():
-    return render_template('class.html', title='Class')
-app.add_url_rule('/class', 'class', classes)
+    academic_catalog = {'itec': 'ITEC - Information Technology', 'hist': 'HIST - History',
+                        'math': 'MATH - Mathematics', 'nurs': 'NURS - Nursing'}
+    form = CreateClassForm()
+    class_list = ClassList.query.order_by(ClassList.program.asc(),ClassList.course_id.asc()).all()
+    if current_user.is_authenticated:
+        if current_user.has_role('admin'):
+            if form.validate_on_submit():
+                create_class = ClassList(program=form.program.data, course_id=form.course_id.data, course_name=form.course_name.data)
+                db.session.add(create_class)
+                db.session.commit()
+                flash('Class has been created!', 'success')
+                return redirect(url_for('class'))
+    return render_template('class.html', title='Classes', form=form, class_list=class_list, academic_catalog=academic_catalog)
+app.add_url_rule('/class', 'class', classes, methods=['GET', 'POST'])
 
 
 def news():
-    posts = Post.query.all()
+    posts = Post.query.order_by(Post.id.desc()).all()
     return render_template('news.html', title='News', posts=posts)
 app.add_url_rule('/news', 'news', news)
 
@@ -137,8 +149,8 @@ app.add_url_rule('/news/post/new', 'new_post', new_post, methods=['GET', 'POST']
 
 
 def post(post_id):
-    create_post = Post.query.get_or_404(post_id)
-    return render_template('post.html', title=create_post.title, post=create_post)
+    view_post = Post.query.get_or_404(post_id)
+    return render_template('post.html', title=view_post.title, post=view_post)
 app.add_url_rule('/news/post/<int:post_id>', 'post', post)
 
 

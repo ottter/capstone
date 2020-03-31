@@ -12,11 +12,80 @@
     <!-- Main -->
     <section id="main" class="wrapper">
         <div class="inner">
+        {% if current_user.is_authenticated and current_user.has_role('admin') %}   {# Checks if user is logged in #}
             <div class="content">
                 <header>
-                    <h3>List of classes we offer notes for</h3>
+                    <h3>Add a class: </h3>
                 </header>
+                <form method="POST" action="" autocomplete="off">
+                {{ form.hidden_tag() }}
+                <div class="row gtr-uniform">
+                    <div class="col-4 col-12-xsmall form-group">
+                        {{ form.program.label(class="form-control-label") }}
+                        {% if form.program.errors %}
+                            {{ form.program(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.program.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.program(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-2 col-12-xsmall form-group">
+                        {{ form.course_id.label(class="form-control-label") }}
+                        {% if form.course_id.errors %}
+                            {{ form.course_id(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.course_id.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.course_id(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                    <div class="col-4 col-12-xsmall form-group">
+                        {{ form.course_name.label(class="form-control-label") }}
+                        {% if form.course_name.errors %}
+                            {{ form.course_name(class="form-control form-control-lg is-invalid") }}
+                            <div class="invalid-feedback">
+                                {% for error in form.course_name.errors %}
+                                    <span>{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                        {% else %}
+                            {{ form.course_name(class="form-control form-control-lg") }}
+                        {% endif %}
+                    </div>
+                </div><br>
+                <div class="col-3 col-12-xsmall form-group">
+                    {{ form.submit(class="btn btn-outline-info") }}
+                </div>
+                </form>
             </div>
+        {% endif %}
+        <div class="content">
+            <header>
+                <h3>List of classes we offer</h3>
+            </header>
+            <table>
+            <col width="300"><col width="55"> {# I hate having this here but I'm lazy #}
+                <tr>
+                    <th>Program</th>
+                    <th>Course ID</th>
+                    <th>Course Name</th>
+                </tr>
+                {% for class in class_list %}
+                    <tr>
+                        <td>{{ academic_catalog[class.program] }}</td>
+                        <td>{{ class.course_id }}</td>
+                        <td>{{ class.course_name }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
         </div>
     </section>
 {% endblock content %}
