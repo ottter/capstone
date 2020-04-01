@@ -3,7 +3,7 @@
 	<head>
         {% block head %}{% endblock %}
 		<meta charset="utf-8" />
-        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
+        <link rel="icon" type="image/png" href="{{ url_for('static', filename='favicon.png') }}">
 		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
 		<link rel="stylesheet" href="{{ url_for('static', filename='assets/css/main.css') }}" />
 	</head>
@@ -95,5 +95,5 @@
         <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/moment.js') }}"></script>
-</body>
+    </body>
 </html>

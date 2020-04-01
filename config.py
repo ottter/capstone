@@ -1,10 +1,10 @@
 import os
 
 class Config(object):
-    DEBUG = True
+    DEBUG = False
     TESTING = False
 
-    SECRET_KEY = '2h80dh28ddh2hdi2Djdd2jhdjdDfhsff'
+    SECRET_KEY = '2h80dh28ddh2hdi2Djdd2jhdjdDfhsff'  # This isn't actually secret and the database doesn't matter
     SQLALCHEMY_DATABASE_URI =  'sqlite:///site.db'
 
     USER_ENABLE_EMAIL = False  # Disable email authentication

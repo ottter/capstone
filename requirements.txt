@@ -4,6 +4,7 @@ flask-bcrypt
 flask-login
 flask-moment
 flask-table
+flask-user
 flask-wtf
 gunicorn
 wtforms
