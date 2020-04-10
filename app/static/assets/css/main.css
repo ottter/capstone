@@ -2879,3 +2879,12 @@ a.article-title:hover {
 .edit-post-button {
   display: inline-block;
 }
+
+.about-videos {
+  width: 90%;
+}
+
+.about-videos iframe{
+  width: 85%;
+  height: 60%;
+}

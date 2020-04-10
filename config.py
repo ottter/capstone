@@ -1,7 +1,7 @@
 import os
 
 class Config(object):
-    DEBUG = False
+    DEBUG = True
     TESTING = False
 
     SECRET_KEY = '2h80dh28ddh2hdi2Djdd2jhdjdDfhsff'  # This isn't actually secret and the database doesn't matter

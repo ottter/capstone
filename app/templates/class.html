@@ -76,12 +76,15 @@
                     <th>Program</th>
                     <th>Course ID</th>
                     <th>Course Name</th>
+                    <th>Notes</th>
                 </tr>
                 {% for class in class_list %}
                     <tr>
                         <td>{{ academic_catalog[class.program] }}</td>
                         <td>{{ class.course_id }}</td>
                         <td>{{ class.course_name }}</td>
+                        <td><a href="#">Link</a></td>
+{# TODO: Make this link to specific class page w/ notes. Base URL off profile URL (/class/<program>-<id>) & DB based on class db #}
                     </tr>
                 {% endfor %}
             </table>
