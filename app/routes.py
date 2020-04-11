@@ -27,7 +27,10 @@ if not User.query.filter_by(stu_id='983204830').first():
         db.session.commit()
 
 def home():
-    return render_template('home.html')
+    test_user_1 = User.query.filter_by(stu_id=983999997).first_or_404()
+    test2 = User.query.filter_by(stu_id=983999998).first_or_404()
+    test3 = User.query.filter_by(stu_id=983999999).first_or_404()
+    return render_template('home.html', test1=test_user_1, test2=test2, test3=test3)
 app.add_url_rule('/', 'home', home)
 
 
@@ -99,8 +102,7 @@ app.add_url_rule("/logout", 'logout', logout)
 @login_required
 def account(stu_id):
     user = User.query.filter_by(stu_id=stu_id).first_or_404()
-    image_file = url_for('static', filename=f'images/profile_pics/{current_user.image_file}')
-    return render_template('account.html', user=user, title='Account', image_file=image_file)
+    return render_template('account.html', user=user, title='Account')
 app.add_url_rule("/user/<stu_id>", 'account', account)
 
 

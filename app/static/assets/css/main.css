@@ -115,9 +115,9 @@ a {
   -webkit-transition: color 0.2s ease-in-out;
   -ms-transition: color 0.2s ease-in-out;
   transition: color 0.2s ease-in-out;
-  text-decoration: underline; }
+  text-decoration: none; }
   a:hover {
-    text-decoration: none; }
+    color: #000000;  }
 
 strong, b {
   font-weight: 600; }
@@ -2887,4 +2887,15 @@ a.article-title:hover {
 .about-videos iframe{
   width: 85%;
   height: 60%;
+}
+
+.flex-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.flex-container > div {
+  width: 50%;
+  margin: 10px;
+  text-align: left;
 }

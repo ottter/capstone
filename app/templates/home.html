@@ -34,7 +34,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="register" class="icon fa-floppy-o"><span class="label">Icon</span></a>
+                            <a href="register" class="icon fa-id-badge"><span class="label">Icon</span></a>
                             <h3>Create your identity</h3>
                         </header>
                         <p>Use your MGA Email to connect and collaborate with fellow students.</p>
@@ -43,7 +43,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="#" class="icon fa-files-o"><span class="label">Icon</span></a>
+                            <a href="#" class="icon fa-share-square-o"><span class="label">Icon</span></a>
                             <h3>Share your notes</h3>
                         </header>
                         <p>Upload your notes here to be shared with your classmates.</p>
@@ -52,7 +52,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="#" class="icon fa-vcard-o"><span class="label">Icon</span></a>
+                            <a href="#" class="icon fa-files-o"><span class="label">Icon</span></a>
                             <h3>View classmate's notes</h3>
                         </header>
                         <p>Access notes from all subjects submitted by other students.</p>
@@ -61,7 +61,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="#" class="icon fa-line-chart"><span class="label">Icon</span></a>
+                            <a href="#" class="icon fa-bar-chart"><span class="label">Icon</span></a>
                             <h3>Track your progress</h3>
                         </header>
                         <p>Keep up with faster paced classes by tracking other students chapter notes.</p>
@@ -70,7 +70,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="#" class="icon fa-paper-plane-o"><span class="label">Icon</span></a>
+                            <a href="#" class="icon fa-line-chart"><span class="label">Icon</span></a>
                             <h3>Raise Your Grades</h3>
                         </header>
                         <p>Virtually study and share notes with your classmates</p>
@@ -79,7 +79,7 @@
                 <section>
                     <div class="content">
                         <header>
-                            <a href="register" class="icon fa-qrcode"><span class="label">Icon</span></a>
+                            <a href="register" class="icon fa-plug"><span class="label">Icon</span></a>
                             <h3>Connect with others</h3>
                         </header>
                         <p>Email other students and professors directly from MGA Connect.</p>
@@ -111,10 +111,11 @@
                             <p>MGA Connect is amazing. It helped me pass Chemistry</p>
                         </blockquote>
                         <div class="author">
-                            <div class="image">
-                                <img src="../static/images/pic01.jpg" alt="" />
-                            </div>
-                            <p class="credit">- <strong>Jane Doe</strong>, <span>Senior<br/> Macon Campus</span></p>
+                            <div class="image"><a href="{{ url_for('account', stu_id=test1.stu_id) }}">
+                                <img src="{{ url_for('static', filename='images/profile_pics/' + test1.image_file) }}" alt="" />
+                            </a></div>
+                            <p class="credit">- <strong><a href="{{ url_for('account', stu_id=test1.stu_id) }}">
+                                Jane Doe</a></strong>, <span>Junior<br/> Macon Campus</span></p>
                         </div>
                     </div>
                 </section>
@@ -124,10 +125,11 @@
                             <p>It's the best website I have ever used.</p>
                         </blockquote>
                         <div class="author">
-                            <div class="image">
-                                <img src="../static/images/pic03.jpg" alt="" />
-                            </div>
-                            <p class="credit">- <strong>John Doe</strong>, <span>Freshman<br/> Warner Robins Campus</span></p>
+                            <div class="image"><a href="{{ url_for('account', stu_id=test2.stu_id) }}">
+                                <img src="{{ url_for('static', filename='images/profile_pics/' + test2.image_file) }}" alt="" />
+                            </a></div>
+                            <p class="credit">- <strong><a href="{{ url_for('account', stu_id=test2.stu_id) }}">
+                                John Doe</a></strong>, <span>Senior<br/> Warner Robins Campus</span></p>
                         </div>
                     </div>
                 </section>
@@ -137,10 +139,11 @@
                             <p>You told me you would give me $5 for a positive review.</p>
                         </blockquote>
                         <div class="author">
-                            <div class="image">
-                                <img src="../static/images/pic02.jpg" alt="" />
-                            </div>
-                            <p class="credit">- <strong>Marianna Smith</strong>, <span>Sophomore<br/> Macon Campus</span></p>
+                            <div class="image"><a href="{{ url_for('account', stu_id=test3.stu_id) }}">
+                                <img src="{{ url_for('static', filename='images/profile_pics/' + test3.image_file) }}" alt="" />
+                            </a></div>
+                            <p class="credit">- <strong><a href="{{ url_for('account', stu_id=test3.stu_id) }}">
+                                Marianna Smith</a></strong>, <span>Sophomore<br/> Macon Campus</span></p>
                         </div>
                     </div>
                 </section>
