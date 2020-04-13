@@ -49,6 +49,12 @@ class EditProfileForm(FlaskForm):
             if user:
                 raise ValidationError('That username is already registered. Please choose a different one.')
 
+
+class AddNotesForm(FlaskForm):
+    notes = FileField('Add Notes')
+    submit = SubmitField('Submit')
+
+
 class PostForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired()])
     content = TextAreaField('Content', validators=[DataRequired()])

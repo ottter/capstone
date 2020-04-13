@@ -19,8 +19,7 @@ class User(db.Model, UserMixin):
     password = db.Column(db.String(30), nullable=False)
 
     posts = db.relationship('Post', backref='author', lazy=True)
-    roles = db.relationship('Role', secondary='user_roles',
-                            backref=db.backref('users', lazy='dynamic'))
+    roles = db.relationship('Role', secondary='user_roles', backref=db.backref('users', lazy='dynamic'))
 
     def has_role(self, name):
         for role in self.roles:
@@ -32,6 +31,17 @@ class User(db.Model, UserMixin):
         return f"User('{self.username}', '{self.email}', '{self.stu_id}')"
 
 user_manager = UserManager(app, db, User)
+
+class Notes(db.Model):
+    __tablename__ = 'notes'
+    id = db.Column(db.Integer, primary_key=True)
+    program =db.Column(db.Integer(), db.ForeignKey('class_list.program', ondelete='CASCADE'))
+    course_id = db.Column(db.Integer(), db.ForeignKey('class_list.course_id', ondelete='CASCADE'))
+    notes_file = db.Column(db.String(20), nullable=False)
+    user_id = db.Column(db.String(9), db.ForeignKey('user.stu_id', ondelete='CASCADE'), nullable=False)
+
+    def __repr__(self):
+        return f"User('{self.id}', '{self.notes_file}, '{self.user_id}')"
 
 class Role(db.Model):
     __tablename__ = 'roles'

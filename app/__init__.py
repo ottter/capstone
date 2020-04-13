@@ -4,7 +4,12 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_moment import Moment
 
+NOTES_FOLDER = 'app/static/notes'
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xfsx'}
+
 app = Flask(__name__)
+
+app.config['NOTES_FOLDER'] = NOTES_FOLDER
 
 environment = app.config["ENV"]
 if environment == "production":
@@ -24,7 +29,7 @@ login_manager.login_message_category = 'info'
 
 @app.before_first_request
 def create_tables():
-    from app.models import User, Post, Role, UserRoles
+    from app.models import User, Post, Role, UserRoles, Notes, ClassList
     db.create_all()
 
 from app import routes

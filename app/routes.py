@@ -1,8 +1,9 @@
 from flask import redirect, url_for, render_template, request, flash
-from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm
-from app.models import User, Post, Role, UserRoles, ClassList
+from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm, AddNotesForm
+from app.models import User, Post, Role, UserRoles, ClassList, Notes
 from datetime import datetime
-from app import app, db, bcrypt
+from app import app, db, bcrypt, ALLOWED_EXTENSIONS
+from werkzeug.utils import secure_filename
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_user import roles_required
 from PIL import Image
@@ -27,10 +28,11 @@ if not User.query.filter_by(stu_id='983204830').first():
         db.session.commit()
 
 def home():
+    # Select which profiles to use for site testimonials
     test_user_1 = User.query.filter_by(stu_id=983999997).first_or_404()
-    test2 = User.query.filter_by(stu_id=983999998).first_or_404()
-    test3 = User.query.filter_by(stu_id=983999999).first_or_404()
-    return render_template('home.html', test1=test_user_1, test2=test2, test3=test3)
+    test_user_2 = User.query.filter_by(stu_id=983999998).first_or_404()
+    test_user_3 = User.query.filter_by(stu_id=983999999).first_or_404()
+    return render_template('home.html', test1=test_user_1, test2=test_user_2, test3=test_user_3)
 app.add_url_rule('/', 'home', home)
 
 
@@ -40,6 +42,7 @@ app.add_url_rule('/about', 'about', about)
 
 
 def classes():
+    # TODO: Find a more intuitive way to list classes
     academic_catalog = {'itec': 'ITEC - Information Technology', 'hist': 'HIST - History',
                         'math': 'MATH - Mathematics', 'nurs': 'NURS - Nursing'}
     form = CreateClassForm()
@@ -52,8 +55,38 @@ def classes():
                 db.session.commit()
                 flash('Class has been created!', 'success')
                 return redirect(url_for('class'))
-    return render_template('class.html', title='Classes', form=form, class_list=class_list, academic_catalog=academic_catalog)
+    return render_template('class_list.html', title='Classes', form=form, class_list=class_list, academic_catalog=academic_catalog)
 app.add_url_rule('/class', 'class', classes, methods=['GET', 'POST'])
+
+
+def save_notes(form_notes): # save and rename uploaded profile picture to random hex string
+    random_hex = binascii.b2a_hex(os.urandom(8)).decode("utf-8")
+    _, f_ext = os.path.splitext(form_notes.filename)
+    notes_filename = random_hex + f_ext
+    return notes_filename
+
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+@login_required
+def course(program, course_id):
+    form = AddNotesForm()
+    if current_user.is_authenticated and request.method == 'POST':
+        if form.validate_on_submit():
+            if form.notes.data and allowed_file(form.notes.data.filename):
+                notes_file = save_notes(form.notes.data)
+                filename = secure_filename(form.notes.data.filename)
+                form.notes.data.save(os.path.join(app.config['NOTES_FOLDER'], filename))
+                add_notes = Notes(program=program, course_id=course_id, notes_file=str(notes_file), user_id=current_user.stu_id)
+                db.session.add(add_notes)
+                db.session.commit()
+            flash('Notes have been uploaded!', 'success')
+            return redirect(url_for('course', program=program, course_id=course_id))
+    return render_template('course_notes.html', title='Course', form=form)
+app.add_url_rule("/class/<program>/<course_id>", 'course', course, methods=['GET', 'POST'])
 
 
 def news():
@@ -102,7 +135,7 @@ app.add_url_rule("/logout", 'logout', logout)
 @login_required
 def account(stu_id):
     user = User.query.filter_by(stu_id=stu_id).first_or_404()
-    return render_template('account.html', user=user, title='Account')
+    return render_template('account_profile.html', user=user, title='Account')
 app.add_url_rule("/user/<stu_id>", 'account', account)
 
 
@@ -117,6 +150,7 @@ def save_picture(form_picture): # save and rename uploaded profile picture to ra
     img.thumbnail(output_size)
     img.save(picture_path)
     return picture_filename
+
 
 @login_required
 def edit_profile():

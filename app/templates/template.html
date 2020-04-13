@@ -22,8 +22,7 @@
             <ul class="links">
                 <li><a href="{{ url_for('home') }}">Home</a></li>
                 <li><a href="{{ url_for('about') }}">About</a></li>
-                <li><a href="#">Latest Notes</a></li>
-                <li><a href="{{ url_for('class') }}">Latest Classes</a></li>
+                <li><a href="{{ url_for('class') }}">Class List</a></li>
                 <li><a href="{{ url_for('news') }}">Announcements</a></li>
                 {% if current_user.is_authenticated %}
                     {% if current_user.has_role('admin') %}

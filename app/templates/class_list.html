@@ -66,6 +66,7 @@
                 </form>
             </div>
         {% endif %}
+{# TODO: Add search filter? #}
         <div class="content">
             <header>
                 <h3>List of classes we offer</h3>
@@ -76,15 +77,20 @@
                     <th>Program</th>
                     <th>Course ID</th>
                     <th>Course Name</th>
-                    <th>Notes</th>
+                    {% if current_user.is_authenticated %}
+                        <th>Notes</th>
+                    {% endif %}
                 </tr>
                 {% for class in class_list %}
                     <tr>
                         <td>{{ academic_catalog[class.program] }}</td>
                         <td>{{ class.course_id }}</td>
                         <td>{{ class.course_name }}</td>
-                        <td><a href="#">Link</a></td>
-{# TODO: Make this link to specific class page w/ notes. Base URL off profile URL (/class/<program>-<id>) & DB based on class db #}
+                        {% if current_user.is_authenticated %}
+                            <td>
+                                <a href="{{ url_for('course', program=class.program, course_id=class.course_id) }}">Link</a>
+                            </td>
+                        {% endif %}
                     </tr>
                 {% endfor %}
             </table>

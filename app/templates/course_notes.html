@@ -1,0 +1,32 @@
+{% extends 'template.html' %}
+
+{% block head %}
+    <title>MGA Connect</title>
+    {{ moment.include_jquery() }}
+    {{ moment.include_moment() }}
+{% endblock %}
+
+{% block content %}
+    <section id="main" class="wrapper">
+        <div class="inner">
+            {% if current_user.is_authenticated and current_user.has_role('admin') %}   {# Checks if user is logged in #}
+            <div class="content">
+            <form action="" method="post" enctype="multipart/form-data">
+                {{ form.hidden_tag() }}
+                <p>
+                    {{ form.notes.label() }}
+                    {{ form.notes(class="form-control-file") }}
+                    {% if form.notes.errors %}
+                        {% for error in form.notes.errors %}
+                            <span class="text-danger" style="color: #86378B;">[{{ error }}]</span><br>
+                        {% endfor %}
+                    {% endif %}
+                </p>
+                <p>{{ form.submit() }}</p>
+            </form>
+            </div>
+        {% endif %}
+        </div>
+    </section>
+
+{% endblock content %}
