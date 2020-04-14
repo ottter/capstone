@@ -4,12 +4,13 @@ from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_moment import Moment
 
-NOTES_FOLDER = 'app/static/notes'
+NOTES_FOLDER = 'app/data/notes/'
 ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xfsx', 'pptx'}
 
 app = Flask(__name__)
 
 app.config['NOTES_FOLDER'] = NOTES_FOLDER
+app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 
 environment = app.config["ENV"]
 if environment == "production":

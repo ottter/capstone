@@ -1,4 +1,4 @@
-from flask import redirect, url_for, render_template, request, flash
+from flask import redirect, url_for, render_template, request, flash, send_from_directory, current_app
 from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm, AddNotesForm
 from app.models import User, Post, Role, UserRoles, ClassList, Notes
 from datetime import datetime
@@ -28,7 +28,7 @@ if not User.query.filter_by(stu_id='983204830').first():
         db.session.commit()
 
 def home():
-    # Select which profiles to use for site testimonials
+    # Selects which profiles to use for site testimonials
     test_user_1 = User.query.filter_by(stu_id=983999997).first_or_404()
     test_user_2 = User.query.filter_by(stu_id=983999998).first_or_404()
     test_user_3 = User.query.filter_by(stu_id=983999999).first_or_404()
@@ -74,7 +74,7 @@ def allowed_file(filename):
 @login_required
 def course(program, course_id):
     form = AddNotesForm()
-    notes_list = Notes.query.filter_by(program=program).all()
+    notes_list = Notes.query.filter_by(program=program, course_id=course_id).all()
     if current_user.is_authenticated and request.method == 'POST':
         if form.validate_on_submit():
             if form.notes.data and allowed_file(form.notes.data.filename):
@@ -90,8 +90,29 @@ def course(program, course_id):
             else:
                 flash('Incorrect File!', 'error')
             return redirect(url_for('course', program=program, course_id=course_id))
+        else:
+            return redirect(url_for('course', program=program, course_id=course_id))
     return render_template('course_notes.html', title='Course', form=form, notes_list=notes_list, program=program, course_id=course_id)
 app.add_url_rule("/class/<program>/<course_id>", 'course', course, methods=['GET', 'POST'])
+
+
+@login_required
+def download_file(filename):
+    return send_from_directory(directory='data/notes/', filename=filename, as_attachment=True)
+app.add_url_rule('/downloads/<filename>', 'download_file', download_file, methods=['GET', 'POST'])
+
+@login_required
+def delete_note_user(note_id):
+    del_note = Notes.query.get_or_404(note_id)
+    program, course_id = del_note.program, del_note.course_id
+    if current_user.stu_id == del_note.user_id:
+        db.session.delete(del_note)
+        db.session.commit()
+        flash('Your note has been deleted!', 'success')
+    else:
+        flash('How did you get this far?', 'error')
+    return redirect(url_for('course', program=program, course_id=course_id))
+app.add_url_rule('/downloads/<note_id>/delete', 'delete_note_user', delete_note_user, methods=['GET', 'POST'])
 
 
 def news():

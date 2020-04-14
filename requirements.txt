@@ -7,5 +7,6 @@ flask-table
 flask-user
 flask-wtf
 gunicorn
+werkzeug
 wtforms
 Pillow
