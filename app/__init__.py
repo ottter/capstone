@@ -5,7 +5,7 @@ from flask_login import LoginManager
 from flask_moment import Moment
 
 NOTES_FOLDER = 'app/static/notes'
-ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xfsx'}
+ALLOWED_EXTENSIONS = {'txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif', 'docx', 'xfsx', 'pptx'}
 
 app = Flask(__name__)
 

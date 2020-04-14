@@ -60,7 +60,7 @@ app.add_url_rule('/class', 'class', classes, methods=['GET', 'POST'])
 
 
 def save_notes(form_notes): # save and rename uploaded profile picture to random hex string
-    random_hex = binascii.b2a_hex(os.urandom(8)).decode("utf-8")
+    random_hex = binascii.b2a_hex(os.urandom(10)).decode("utf-8")
     _, f_ext = os.path.splitext(form_notes.filename)
     notes_filename = random_hex + f_ext
     return notes_filename
@@ -74,18 +74,23 @@ def allowed_file(filename):
 @login_required
 def course(program, course_id):
     form = AddNotesForm()
+    notes_list = Notes.query.filter_by(program=program).all()
     if current_user.is_authenticated and request.method == 'POST':
         if form.validate_on_submit():
             if form.notes.data and allowed_file(form.notes.data.filename):
                 notes_file = save_notes(form.notes.data)
-                filename = secure_filename(form.notes.data.filename)
+                filename = secure_filename(notes_file)
                 form.notes.data.save(os.path.join(app.config['NOTES_FOLDER'], filename))
-                add_notes = Notes(program=program, course_id=course_id, notes_file=str(notes_file), user_id=current_user.stu_id)
+                add_notes = Notes(program=program, course_id=course_id, notes_file=str(notes_file),
+                                  user_id=current_user.stu_id, title=form.title.data, content=form.description.data,
+                                  original_filename=form.notes.data.filename)
                 db.session.add(add_notes)
                 db.session.commit()
-            flash('Notes have been uploaded!', 'success')
+                flash('Notes have been uploaded!', 'success')
+            else:
+                flash('Incorrect File!', 'error')
             return redirect(url_for('course', program=program, course_id=course_id))
-    return render_template('course_notes.html', title='Course', form=form)
+    return render_template('course_notes.html', title='Course', form=form, notes_list=notes_list, program=program, course_id=course_id)
 app.add_url_rule("/class/<program>/<course_id>", 'course', course, methods=['GET', 'POST'])
 
 

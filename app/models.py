@@ -37,7 +37,11 @@ class Notes(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     program =db.Column(db.Integer(), db.ForeignKey('class_list.program', ondelete='CASCADE'))
     course_id = db.Column(db.Integer(), db.ForeignKey('class_list.course_id', ondelete='CASCADE'))
+    title = db.Column(db.String(100), nullable=False)
+    date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+    content = db.Column(db.Text, nullable=True)
     notes_file = db.Column(db.String(20), nullable=False)
+    original_filename = db.Column(db.String(100), nullable=False)
     user_id = db.Column(db.String(9), db.ForeignKey('user.stu_id', ondelete='CASCADE'), nullable=False)
 
     def __repr__(self):

@@ -1,7 +1,7 @@
 {% extends 'template.html' %}
 
 {% block head %}
-    <title>MGA Connect</title>
+    <title>MGA Connect - {{ program.upper() + ' ' + course_id }}</title>
     {{ moment.include_jquery() }}
     {{ moment.include_moment() }}
 {% endblock %}
@@ -9,24 +9,75 @@
 {% block content %}
     <section id="main" class="wrapper">
         <div class="inner">
-            {% if current_user.is_authenticated and current_user.has_role('admin') %}   {# Checks if user is logged in #}
             <div class="content">
-            <form action="" method="post" enctype="multipart/form-data">
-                {{ form.hidden_tag() }}
-                <p>
-                    {{ form.notes.label() }}
-                    {{ form.notes(class="form-control-file") }}
-                    {% if form.notes.errors %}
-                        {% for error in form.notes.errors %}
-                            <span class="text-danger" style="color: #86378B;">[{{ error }}]</span><br>
-                        {% endfor %}
-                    {% endif %}
-                </p>
-                <p>{{ form.submit() }}</p>
-            </form>
+                <header>
+                    <h2>{{ program + ' ' + course_id }} Notes</h2>
+                </header>
+                <table>
+                <col width="90"><col width="300"><col width="300"><col width="90"><col width="25"> {# I hate having this here but I'm lazy #}
+                    <tr>
+                        <th>Date Posted</th>
+                        <th>Title</th>
+                        <th>Filename</th>
+                        <th>Uploader</th>
+                        <th> </th>
+                    </tr>
+                    {% for note in notes_list %}
+                        <tr>
+                            <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
+                            <td>{{ note.title }}</td>
+                            <td>{{ note.original_filename }}</td>
+                            <td>{{ note.user_id }}</td>
+                            <td><a href="#" class="icon fa-download"></a></td>
+                        </tr>
+                    {% endfor %}
+                </table>
             </div>
-        {% endif %}
+            {% if current_user.is_authenticated %}   {# Checks if user is logged in #}
+            <div class="content">
+                <h2>Upload your files</h2>
+                <form action="" method="post" enctype="multipart/form-data">
+                    {{ form.hidden_tag() }}
+                    <fieldset class="form-group">
+                        <div class="form-group">
+                            {{ form.title.label(class="form-control-label") }}
+                            {% if form.title.errors %}
+                                {{ form.title(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.title.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.title(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div><br/>
+                        <div class="form-group">
+                            {{ form.description.label(class="form-control-label") }}
+                            {% if form.description.errors %}
+                                {{ form.description(class="form-control form-control-lg is-invalid") }}
+                                <div class="invalid-feedback">
+                                    {% for error in form.description.errors %}
+                                        <span>{{ error }}</span>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                {{ form.description(class="form-control form-control-lg") }}
+                            {% endif %}
+                        </div>
+                        <p><br>
+                        {{ form.notes(class="form-control-file") }}
+                        {% if form.notes.errors %}
+                            {% for error in form.notes.errors %}
+                                <span class="text-danger" style="color: #86378B;">[{{ error }}]</span><br>
+                            {% endfor %}
+                        {% endif %}
+                    </p>
+                    </fieldset>
+                    <p>{{ form.submit() }}</p>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </section>
-
 {% endblock content %}
