@@ -9,39 +9,46 @@
 {% block content %}
     <section id="main" class="wrapper">
         <div class="inner">
-            <a class="logo" href="{{ url_for('class') }}"><i class="fa fa-arrow-left"></i> Back </a>
+            <h4><a class="logo" href="{{ url_for('class') }}"><i class="fa fa-arrow-left"></i> Back </a></h4>
             <div class="content">
                 <header>
                     <h2>{{ program + ' ' + course_id }} Notes</h2>
                 </header>
-                <table>
-                <col width="100"><col width="300"><col width="300"><col width="90"><col width="20"><col width="20"> {# I hate having this here but I'm lazy #}
-                    <tr>
-                        <th>Date Posted</th>
-                        <th>Title</th>
-                        <th>Filename</th>
-                        <th>Uploader</th>
-                        <th> </th>
-                        <th> </th>
-                    </tr>
-                    {% for note in notes_list %}
+                {% if notes_list %}
+                    <h4><a href="#upload">Upload your own <i class="fa fa-upload"></i></a></h4>
+                    <input type="text" id="myInput" onkeyup="mySearchFunction(1)" placeholder="Search by title">
+                    <br>
+                    <table id="myTable">
+                    <col width="100"><col width="300"><col width="300"><col width="90"><col width="20"><col width="20"> {# I hate having this here but I'm lazy #}
                         <tr>
-                            <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
-                            <td>{{ note.title }}</td>
-                            <td>{{ note.original_filename }}</td>
-                            <td><a href="{{ url_for('account', stu_id=note.user_id) }}">{{ note.user_id }}</a></td>
-                            <td><a href="{{ url_for('download_file', filename=note.notes_file) }}" class="icon fa-download"></a></td>
-                            {% if current_user.stu_id == note.user_id %}
-                                <td><a href="{{ url_for('delete_note_user', note_id=note.id) }}" class="icon fa-trash"></a></td>
-                            {% else %}
-                                <td> </td>
-                            {% endif %}
+                            <th>Date Posted</th>
+                            <th>Title</th>
+                            <th>Filename</th>
+                            <th>Uploader</th>
+                            <th> </th>
+                            <th> </th>
                         </tr>
-                    {% endfor %}
-                </table>
+                        {% for note in notes_list %}
+                            <tr>
+                                <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
+                                <td>{{ note.title }}</td>
+                                <td>{{ note.original_filename }}</td>
+                                <td><a href="{{ url_for('account', stu_id=note.user_id) }}">{{ note.user_id }}</a></td>
+                                <td><a href="{{ url_for('download_file', filename=note.notes_file) }}" class="icon fa-download"></a></td>
+                                {% if current_user.stu_id == note.user_id %}
+                                    <td><a href="{{ url_for('delete_note_user', note_id=note.id) }}" class="icon fa-trash"></a></td>
+                                {% else %}
+                                    <td> </td>
+                                {% endif %}
+                            </tr>
+                        {% endfor %}
+                    </table>
+                {% else %}
+                    <a style="text-align:center" href="#upload"><h3>Be the first to upload notes for this class!</h3></a>
+                {% endif %}
             </div>
-            {% if current_user.is_authenticated %}   {# Checks if user is logged in #}
-            <div class="content">
+            {% if current_user.is_authenticated %}
+            <div id="upload" class="content">
                 <h2>Upload your files</h2>
                 <form action="" method="post" enctype="multipart/form-data">
                     {{ form.hidden_tag() }}

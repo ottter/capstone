@@ -1,5 +1,5 @@
 <div id="heading" >
-    <h1>Active Classes</h1>
+    <h1>Participating Classes</h1>
 </div>
 {% extends "template.html" %}
 {% block head %}
@@ -7,8 +7,6 @@
 {% endblock %}
 
 {% block content %}
-    <!-- Heading -->
-
     <!-- Main -->
     <section id="main" class="wrapper">
         <div class="inner">
@@ -66,14 +64,21 @@
                 </form>
             </div>
         {% endif %}
-{# TODO: Add search filter? #}
         <div class="content">
             <header>
                 <h3>List of classes we offer</h3>
             </header>
+            <input type="text" id="myInput" onkeyup="mySearchFunction(3)" placeholder="Search by course name">
+            <br>
             <table>
-            <col width="300"><col width="55"> {# I hate having this here but I'm lazy #}
+                {% if current_user.has_role('admin') %}
+                    <col width="0">
+                {% endif %}
+                <col width="300"><col width="30"><col width="400"><col width="20">
                 <tr>
+                    {% if current_user.has_role('admin') %}
+                        <th> </th>
+                    {% endif %}
                     <th>Program</th>
                     <th>Course ID</th>
                     <th>Course Name</th>
@@ -81,8 +86,12 @@
                         <th>Notes</th>
                     {% endif %}
                 </tr>
+                <tbody id="myTable">
                 {% for class in class_list %}
                     <tr>
+                        {% if current_user.has_role('admin') %}
+                            <td><a class="icon fa-trash"></a></td>
+                        {% endif %}
                         <td>{{ academic_catalog[class.program] }}</td>
                         <td>{{ class.course_id }}</td>
                         <td>{{ class.course_name }}</td>
@@ -93,6 +102,7 @@
                         {% endif %}
                     </tr>
                 {% endfor %}
+                </tbody>
             </table>
         </div>
         </div>

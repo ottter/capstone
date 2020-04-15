@@ -655,7 +655,14 @@ table thead {
 table tfoot {
   border-top-color: rgba(0, 0, 0, 0.25); }
 table.alt tbody tr td {
-  border-color: rgba(0, 0, 0, 0.25); }
+  border-color: rgba(0, 0, 0, 0.25);
+  background-color: rgba(0, 0, 0, 0.075);}
+/* purple hover table*/
+/*tr:hover {*/
+  /*background-color: rgba(226, 103, 229, 0.27); }*/
+  /*tr:hover:nth-child(2n + 1) {*/
+    /*background-color: rgba(226, 103, 229, 0.27); }*/
+
 
 /* Highlights */
 .highlights {
@@ -2898,4 +2905,34 @@ a.article-title:hover {
   width: 50%;
   margin: 10px;
   text-align: left;
+}
+
+.alert-success {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  border-left: 6px solid #0f8b20;
+  background-color: #62ff7b;
+  color: black;
+}
+
+.alert-info {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  border-left: 6px solid orange;
+  background-color: #ebff6b;
+  color: black;
+}
+
+.alert-error {
+  padding: 12px;
+  border-radius: 3px;
+  font-size: 1.2rem;
+  margin-bottom: 16px;
+  border-left: 6px solid #ff1e00;
+  background-color: #ff6a4f;
+  color: black;
 }

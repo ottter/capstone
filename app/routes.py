@@ -1,4 +1,4 @@
-from flask import redirect, url_for, render_template, request, flash, send_from_directory, current_app
+from flask import redirect, url_for, render_template, request, flash, send_from_directory
 from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm, AddNotesForm
 from app.models import User, Post, Role, UserRoles, ClassList, Notes
 from datetime import datetime
@@ -47,6 +47,9 @@ def classes():
                         'math': 'MATH - Mathematics', 'nurs': 'NURS - Nursing'}
     form = CreateClassForm()
     class_list = ClassList.query.order_by(ClassList.program.asc(),ClassList.course_id.asc()).all()
+    if not current_user.is_authenticated:
+        flash('That feature is for users only! Register an account first!', 'info')
+        return redirect(url_for('register'))
     if current_user.is_authenticated:
         if current_user.has_role('admin'):
             if form.validate_on_submit():
@@ -86,9 +89,10 @@ def course(program, course_id):
                                   original_filename=form.notes.data.filename)
                 db.session.add(add_notes)
                 db.session.commit()
-                flash('Notes have been uploaded!', 'success')
+                flash('Your notes have been uploaded!', 'success')
             else:
-                flash('Incorrect File!', 'error')
+                flash("Bad File! Your upload must be under 16MB and one of these filetypes:"
+                      ".TXT, .PDF, .PNG, .JPG, .DOCX, .XFSX, .PPTX", 'error')
             return redirect(url_for('course', program=program, course_id=course_id))
         else:
             return redirect(url_for('course', program=program, course_id=course_id))
@@ -103,12 +107,13 @@ app.add_url_rule('/downloads/<filename>', 'download_file', download_file, method
 
 @login_required
 def delete_note_user(note_id):
+    # TODO: Add admin function to delete too
     del_note = Notes.query.get_or_404(note_id)
     program, course_id = del_note.program, del_note.course_id
     if current_user.stu_id == del_note.user_id:
         db.session.delete(del_note)
         db.session.commit()
-        flash('Your note has been deleted!', 'success')
+        flash('Your note has been deleted!', 'info')
     else:
         flash('How did you get this far?', 'error')
     return redirect(url_for('course', program=program, course_id=course_id))
@@ -147,7 +152,7 @@ def login():
             next_page = request.args.get('next')
             return redirect(next_page) if next_page else redirect(url_for('home'))
         else:
-            flash('Login Unsuccessful. Please check email and password', 'danger')
+            flash('Login Unsuccessful. Please check email and password', 'error')
     return render_template('login.html', title='Login', form=form)
 app.add_url_rule("/login", 'login', login, methods=['GET', 'POST'])
 
@@ -160,8 +165,12 @@ app.add_url_rule("/logout", 'logout', logout)
 
 @login_required
 def account(stu_id):
+    if not current_user.is_authenticated:
+        flash('That feature is for users only! Register an account first!', 'info')
+        return redirect(url_for('register'))
     user = User.query.filter_by(stu_id=stu_id).first_or_404()
-    return render_template('account_profile.html', user=user, title='Account')
+    uploaded = Notes.query.filter_by(user_id=stu_id).order_by(Notes.id.desc()).all()
+    return render_template('account_profile.html', user=user, uploaded=uploaded, title='Account')
 app.add_url_rule("/user/<stu_id>", 'account', account)
 
 
@@ -193,6 +202,7 @@ def edit_profile():
     elif request.method == 'GET':
         form.username.data = current_user.username
         form.about_me.data = current_user.about_me
+        flash('No changes have been made.', 'success')
     return render_template('edit_profile.html', title='Edit Profile', form=form)
 app.add_url_rule("/user/edit_profile", 'edit_profile', edit_profile, methods=['GET', 'POST'])
 

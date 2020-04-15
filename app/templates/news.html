@@ -12,6 +12,11 @@
     <!-- Main -->
     <section id="main" class="wrapper">
         <div class="inner">
+            {% if current_user.is_authenticated %}
+                {% if current_user.has_role('admin') %}
+                    <h3><a href="{{ url_for('new_post') }}">Create A New Announcement <i class="fa fa-share"></i></a></h3>
+                {% endif %}
+            {% endif %}
             <div class="content-section">
                 {% for post in posts %}
                     <article class="media content-section">

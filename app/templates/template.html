@@ -40,17 +40,15 @@
 
         <!-- Alerts -->
         <div class="inner">
-            <div class="content">
-                {% with messages = get_flashed_messages(with_categories=true) %}
-                    {% if messages %}
-                        {% for category, message in messages %}
-                            <div class="alert alert-{{ category }}" role="alert">
-                                {{ message }}
-                            </div>
-                        {% endfor %}
-                    {% endif %}
-                {% endwith %}
-            </div>
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-{{ category }}" role="alert" onclick=delete_flash(this)>
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
         </div>
         {% block content %}{% endblock %}
 
@@ -87,6 +85,8 @@
         <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/flash-exit.js') }}"></script>
+        <script src="{{ url_for('static', filename='assets/js/search-bar.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/util.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/main.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/moment.js') }}"></script>

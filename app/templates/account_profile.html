@@ -31,10 +31,46 @@
                 </div>
             </div>
             <hr>
+            {% if uploaded %}
+            <div class="content">
+                <h3>User Uploads</h3>
+                <table>
+                <col width="100"><col width="20"><col width="20"><col width="300"><col width="200"><col width="20"><col width="20"> {# I hate having this here but I'm lazy #}
+                    <tr>
+                        <th>Date Posted</th>
+                        <th>Program</th>
+                        <th>Course ID</th>
+                        <th>Title</th>
+                        <th>Filename</th>
+                        <th> </th>
+                        <th> </th>
+                    </tr>
+                    {% for note in uploaded %}
+                        <tr>
+                            <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
+                            <td>{{ note.program }}</td>
+                            <td>{{ note.course_id }}</td>
+                            <td>{{ note.title }}</td>
+                            <td>{{ note.original_filename }}</td>
+                            <td><a href="{{ url_for('download_file', filename=note.notes_file) }}" class="icon fa-download"></a></td>
+                            {% if current_user.stu_id == note.user_id %}
+                                <td><a href="{{ url_for('delete_note_user', note_id=note.id) }}" class="icon fa-trash"></a></td>
+                            {% else %}
+                                <td> </td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+            {% else %}
+                <h3>This user has not uploaded any notes yet</h3>
+            {% endif %}
+            <hr>
             <form action="#" method="POST">
+                <h3>Search for users</h3>
                 <input type="email" name="email" placeholder="Enter Email" value="{{ email if email }}" />
                 <br>
-                <input type="submit" value="search" />
+                <input type="submit" value="Search" />
             </form>
         </div>
     </div>
