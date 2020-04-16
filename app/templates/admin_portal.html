@@ -1,0 +1,35 @@
+<div id="heading" >
+    <h1>Admin Portal</h1>
+</div>
+{% extends "template.html" %}
+{% block head %}
+    <title>MGA Connect - Admin Portal</title>
+{% endblock %}
+
+{% block content %}
+    <section id="main" class="wrapper">
+        <div class="inner">
+
+        <h3>Last Logged In</h3>
+        <input type="text" id="myInput" onkeyup="mySearchFunction(2)" placeholder="Search by name">
+            <br>
+        <table id="myTable">
+        <col width="150"><col width="100"><col width="200"><col width="200">
+            <tr>
+                <th>Last Logged In</th>
+                <th>Student ID</th>
+                <th>Username</th>
+                <th>Email</th>
+            </tr>
+            {% for user in users %}
+                <tr>
+                    <td>{{ user.last_seen.strftime('%b %d, %Y') }}</td>
+                    <td>{{ user.stu_id }}</td>
+                    <td>{{ user.username }}</td>
+                    <td>{{ user.email }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+        </div>
+    </section>
+{% endblock %}

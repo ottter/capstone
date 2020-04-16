@@ -51,7 +51,7 @@ class EditProfileForm(FlaskForm):
 
 
 class AddNotesForm(FlaskForm):
-    title = StringField('Title', validators=[DataRequired()], render_kw={"placeholder": "Prof Langdon's lecture on Julius Caesar"})
+    title = StringField('Title', validators=[DataRequired(), Length(min=5, max=100)], render_kw={"placeholder": "Prof Langdon's lecture on Julius Caesar"})
     description = TextAreaField('Briefly describe the contents', validators=[Length(min=0, max=250)], render_kw={"placeholder": "My shift key was broken so sorry about that!"})
     notes = FileField('Add Notes')
     submit = SubmitField('Submit')
@@ -64,10 +64,11 @@ class PostForm(FlaskForm):
 
 
 class CreateClassForm(FlaskForm):
-    academic_catalog = [('itec', 'ITEC - Information Technology'), ('hist', 'HIST - History'),
+    academic_catalog = [('avia', 'AVIA - Aviation'), ('biol', 'BIOL - Biology'), ('engl',  'ENGL - English'),
+                        ('itec', 'ITEC - Information Technology'), ('hist', 'HIST - History'),
                         ('math', 'MATH - Mathematics'), ('nurs', 'NURS - Nursing', )]
     program = SelectField('Program Name', choices=academic_catalog, validators=[DataRequired()])
     course_id = IntegerField('Course ID', render_kw={"placeholder": "e.g., 4750"},
-                             validators=[DataRequired(), NumberRange(min=1000, max=9999, message='Must be in valid Course ID format')])
+                             validators=[DataRequired(), NumberRange(min=900, max=9999, message='Must be in valid Course ID format')])
     course_name = StringField('Course Name', validators=[DataRequired()], render_kw={"placeholder": "e.g., Senior Capstone"})
     submit = SubmitField('Add Class')

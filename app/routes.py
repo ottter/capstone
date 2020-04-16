@@ -43,8 +43,10 @@ app.add_url_rule('/about', 'about', about)
 
 def classes():
     # TODO: Find a more intuitive way to list classes
-    academic_catalog = {'itec': 'ITEC - Information Technology', 'hist': 'HIST - History',
-                        'math': 'MATH - Mathematics', 'nurs': 'NURS - Nursing'}
+    academic_catalog = {'avia':'AVIA - Aviation', 'biol':'BIOL - Biology', 'engl': 'ENGL - English',
+                        'itec': 'ITEC - Information Technology', 'hist': 'HIST - History', 'math': 'MATH - Mathematics',
+                        'nurs': 'NURS - Nursing'
+                        }
     form = CreateClassForm()
     class_list = ClassList.query.order_by(ClassList.program.asc(),ClassList.course_id.asc()).all()
     if not current_user.is_authenticated:
@@ -95,6 +97,7 @@ def course(program, course_id):
                       ".TXT, .PDF, .PNG, .JPG, .DOCX, .XFSX, .PPTX", 'error')
             return redirect(url_for('course', program=program, course_id=course_id))
         else:
+            flash("Bad Upload! Take a look at your title, it might be too long or too short.", 'error')
             return redirect(url_for('course', program=program, course_id=course_id))
     return render_template('course_notes.html', title='Course', form=form, notes_list=notes_list, program=program, course_id=course_id)
 app.add_url_rule("/class/<program>/<course_id>", 'course', course, methods=['GET', 'POST'])
@@ -251,6 +254,13 @@ def delete_post(post_id):
     flash('Your post has been deleted!', 'success')
     return redirect(url_for('news'))
 app.add_url_rule('/news/post/<int:post_id>/delete', 'delete_post', delete_post, methods=['POST'])
+
+
+@roles_required('admin')
+def admin_portal():
+    users = User.query.order_by(User.last_seen.desc()).all()
+    return render_template('admin_portal.html', title='Admin Portal', users=users)
+app.add_url_rule('/admin_portal', 'admin_portal', admin_portal, methods=['GET', 'POST'])
 
 
 @app.before_request
