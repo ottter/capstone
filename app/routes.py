@@ -117,7 +117,7 @@ app.add_url_rule('/downloads/<filename>', 'download_file', download_file, method
 
 
 @login_required
-def delete_note_user(note_id):
+def delete_note(note_id):
     del_note = Notes.query.get_or_404(note_id)
     program, course_id = del_note.program, del_note.course_id
     if current_user.stu_id == del_note.user_id:
@@ -131,7 +131,7 @@ def delete_note_user(note_id):
     else:
         flash('How did you get this far?', 'error')
     return redirect(url_for('course', program=program, course_id=course_id))
-app.add_url_rule('/downloads/<note_id>/delete', 'delete_note_user', delete_note_user, methods=['GET', 'POST'])
+app.add_url_rule('/downloads/<note_id>/delete', 'delete_note', delete_note, methods=['GET', 'POST'])
 
 
 def news():

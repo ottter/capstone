@@ -68,7 +68,7 @@
             <header>
                 <h3>List of classes we currently offer</h3>
             </header>
-            <input type="text" id="myInput" onkeyup="mySearchFunction(2)" placeholder="Search by course name">
+            <input type="text" id="myInput" onkeyup="mySearchFunction(3)" placeholder="Search by course name">
             <br>
             <table>
                 {% if current_user.has_role('admin') %}
@@ -76,9 +76,7 @@
                 {% endif %}
                 <col width="300"><col width="30"><col width="400"><col width="20">
                 <tr>
-                    {% if current_user.has_role('admin') %}
-                        <th> </th>
-                    {% endif %}
+                    <th> </th>
                     <th>Program</th>
                     <th>Course ID</th>
                     <th>Course Name</th>
@@ -91,6 +89,8 @@
                     <tr>
                         {% if current_user.has_role('admin') %}
                             <td><a class="icon fa-trash"></a></td>
+                        {% else %}
+                            <td> </td>
                         {% endif %}
                         <td>{{ academic_catalog[class.program] }}</td>
                         <td>{{ class.course_id }}</td>

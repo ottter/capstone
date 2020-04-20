@@ -54,7 +54,7 @@
                             <td>{{ note.original_filename }}</td>
                             <td><a href="{{ url_for('download_file', filename=note.notes_file) }}" class="icon fa-download"></a></td>
                             {% if current_user.stu_id == note.user_id %}
-                                <td><a href="{{ url_for('delete_note_user', note_id=note.id) }}" class="icon fa-trash"></a></td>
+                                <td><a href="{{ url_for('delete_note', note_id=note.id) }}" class="icon fa-trash"></a></td>
                             {% else %}
                                 <td> </td>
                             {% endif %}

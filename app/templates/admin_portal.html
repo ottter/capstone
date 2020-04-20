@@ -11,19 +11,28 @@
         <div class="inner">
         <h3>Recent Uploads</h3>
         <table>
-        <col width="150"><col width="200"><col width="500"><col width="100">
+        <col width="150"><col width="200"><col width="500"><col width="100"><col width="15"><col width="15">
             <tr>
                 <th>Upload Date</th>
                 <th>Course</th>
                 <th>Upload Title</th>
                 <th>Student ID</th>
+                <th> </th>
+                <th> </th>
             </tr>
             {% for note in notes %}
                 <tr>
                     <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
-                    <td>{{ note.program }} {{ note.course_id }}</td>
+                    <td><a href="{{ url_for('course', program=note.program, course_id=note.course_id) }}">
+                        {{ note.program }} {{ note.course_id }}</a></td>
                     <td>{{ note.title }}</td>
                     <td><a href="{{ url_for('account', stu_id=note.user_id) }}">{{ note.user_id }}</a></td>
+                    <td><a href="{{ url_for('download_file', filename=note.notes_file) }}" class="icon fa-download"></a></td>
+                    {% if current_user.has_role('admin') %}
+                        <td><a href="{{ url_for('delete_note', note_id=note.id) }}" class="icon fa-trash"></a></td>
+                    {% else %}
+                        <td> </td>
+                    {% endif %}
                 </tr>
             {% endfor %}
         </table>
