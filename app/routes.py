@@ -27,6 +27,7 @@ if not User.query.filter_by(stu_id='983204830').first():
         db.session.add(user_role)
         db.session.commit()
 
+
 def home():
     # Selects which profiles to use for site testimonials
     test_user_1 = User.query.filter_by(stu_id=983999997).first_or_404()
@@ -80,6 +81,7 @@ def allowed_file(filename):
 def unauthorized_callback():
     return redirect('/login?next=' + request.path)
 
+
 @login_required
 def course(program, course_id):
     form = AddNotesForm()
@@ -113,15 +115,19 @@ def download_file(filename):
     return send_from_directory(directory='data/notes/', filename=filename, as_attachment=True)
 app.add_url_rule('/downloads/<filename>', 'download_file', download_file, methods=['GET', 'POST'])
 
+
 @login_required
 def delete_note_user(note_id):
-    # TODO: Add admin function to delete too
     del_note = Notes.query.get_or_404(note_id)
     program, course_id = del_note.program, del_note.course_id
     if current_user.stu_id == del_note.user_id:
         db.session.delete(del_note)
         db.session.commit()
         flash('Your note has been deleted!', 'info')
+    elif current_user.has_role('admin'):
+        db.session.delete(del_note)
+        db.session.commit()
+        flash('Selected note has been deleted!', 'info')
     else:
         flash('How did you get this far?', 'error')
     return redirect(url_for('course', program=program, course_id=course_id))
