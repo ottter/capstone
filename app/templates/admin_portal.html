@@ -9,24 +9,42 @@
 {% block content %}
     <section id="main" class="wrapper">
         <div class="inner">
+        <h3>Recent Uploads</h3>
+        <table>
+        <col width="150"><col width="200"><col width="500"><col width="100">
+            <tr>
+                <th>Upload Date</th>
+                <th>Course</th>
+                <th>Upload Title</th>
+                <th>Student ID</th>
+            </tr>
+            {% for note in notes %}
+                <tr>
+                    <td>{{ note.date_posted.strftime('%b %d, %Y') }}</td>
+                    <td>{{ note.program }} {{ note.course_id }}</td>
+                    <td>{{ note.title }}</td>
+                    <td><a href="{{ url_for('account', stu_id=note.user_id) }}">{{ note.user_id }}</a></td>
+                </tr>
+            {% endfor %}
+        </table>
 
         <h3>Last Logged In</h3>
         <input type="text" id="myInput" onkeyup="mySearchFunction(2)" placeholder="Search by name">
             <br>
         <table id="myTable">
-        <col width="150"><col width="100"><col width="200"><col width="200">
+        <col width="150"><col width="200"><col width="500"><col width="100">
             <tr>
                 <th>Last Logged In</th>
-                <th>Student ID</th>
                 <th>Username</th>
                 <th>Email</th>
+                <th>Student ID</th>
             </tr>
             {% for user in users %}
                 <tr>
                     <td>{{ user.last_seen.strftime('%b %d, %Y') }}</td>
-                    <td>{{ user.stu_id }}</td>
                     <td>{{ user.username }}</td>
                     <td>{{ user.email }}</td>
+                    <td><a href="{{ url_for('account', stu_id=user.stu_id) }}">{{ user.stu_id }}</a></td>
                 </tr>
             {% endfor %}
         </table>

@@ -2,7 +2,7 @@ from flask import redirect, url_for, render_template, request, flash, send_from_
 from app.forms import RegistrationForm, EditProfileForm, LoginForm, PostForm, CreateClassForm, AddNotesForm
 from app.models import User, Post, Role, UserRoles, ClassList, Notes
 from datetime import datetime
-from app import app, db, bcrypt, ALLOWED_EXTENSIONS
+from app import app, db, bcrypt, ALLOWED_EXTENSIONS, login_manager
 from werkzeug.utils import secure_filename
 from flask_login import login_user, current_user, logout_user, login_required
 from flask_user import roles_required
@@ -76,10 +76,14 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+@login_manager.unauthorized_handler
+def unauthorized_callback():
+    return redirect('/login?next=' + request.path)
+
 @login_required
 def course(program, course_id):
     form = AddNotesForm()
-    notes_list = Notes.query.filter_by(program=program, course_id=course_id).all()
+    notes_list = Notes.query.filter_by(program=program, course_id=course_id).order_by(Notes.date_posted.desc()).all()
     if current_user.is_authenticated and request.method == 'POST':
         if form.validate_on_submit():
             if form.notes.data and allowed_file(form.notes.data.filename):
@@ -92,6 +96,7 @@ def course(program, course_id):
                 db.session.add(add_notes)
                 db.session.commit()
                 flash('Your notes have been uploaded!', 'success')
+                return redirect(url_for('course', program=program, course_id=course_id))
             else:
                 flash("Bad File! Your upload must be under 16MB and one of these filetypes:"
                       ".TXT, .PDF, .PNG, .JPG, .DOCX, .XFSX, .PPTX", 'error')
@@ -166,11 +171,10 @@ def logout():
 app.add_url_rule("/logout", 'logout', logout)
 
 
-@login_required
 def account(stu_id):
     if not current_user.is_authenticated:
-        flash('That feature is for users only! Register an account first!', 'info')
-        return redirect(url_for('register'))
+        flash('That feature is for logged in users only! Sign in or register an account first!', 'info')
+        return redirect(url_for('login'))
     user = User.query.filter_by(stu_id=stu_id).first_or_404()
     uploaded = Notes.query.filter_by(user_id=stu_id).order_by(Notes.id.desc()).all()
     return render_template('account_profile.html', user=user, uploaded=uploaded, title='Account')
@@ -258,8 +262,9 @@ app.add_url_rule('/news/post/<int:post_id>/delete', 'delete_post', delete_post, 
 
 @roles_required('admin')
 def admin_portal():
-    users = User.query.order_by(User.last_seen.desc()).all()
-    return render_template('admin_portal.html', title='Admin Portal', users=users)
+    users = User.query.order_by(User.last_seen.desc()).limit(20).all()
+    notes = Notes.query.order_by(Notes.date_posted.desc()).limit(10).all()
+    return render_template('admin_portal.html', title='Admin Portal', users=users, notes=notes)
 app.add_url_rule('/admin_portal', 'admin_portal', admin_portal, methods=['GET', 'POST'])
 
 

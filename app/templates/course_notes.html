@@ -88,6 +88,10 @@
                         {% endif %}
                     </p>
                     </fieldset>
+                    <div class="form-check col-4 col-12-small">
+                        {{ form.tos(class="form-check-input") }}
+                        {{ form.tos.label(class="form-check-label") }}
+                    </div>
                     <p>{{ form.submit() }}</p>
                 </form>
             </div>

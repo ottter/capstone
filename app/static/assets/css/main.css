@@ -2069,7 +2069,7 @@ ul.icons {
   background-color: #86378B;
   color: rgba(255, 255, 255, 0.75);
   background-attachment: fixed;
-  background-image: linear-gradient(rgba(94, 38, 97, 0.25), rgba(94, 38, 97, 0.25)), url(../../images/books01.jpg);
+  background-image: linear-gradient(rgba(94, 38, 97, 0.25), rgba(0, 0, 0, 0.91)), url(../../images/books01.jpg);
   background-position: bottom;
   background-repeat: no-repeat;
   background-size: cover;

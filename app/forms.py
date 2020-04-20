@@ -54,6 +54,7 @@ class AddNotesForm(FlaskForm):
     title = StringField('Title', validators=[DataRequired(), Length(min=5, max=100)], render_kw={"placeholder": "Prof Langdon's lecture on Julius Caesar"})
     description = TextAreaField('Briefly describe the contents', validators=[Length(min=0, max=250)], render_kw={"placeholder": "My shift key was broken so sorry about that!"})
     notes = FileField('Add Notes')
+    tos = BooleanField('I agree that this is my own work (and other TOS legalese).', [DataRequired()])
     submit = SubmitField('Submit')
 
 
