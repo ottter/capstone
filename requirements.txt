@@ -10,3 +10,4 @@ gunicorn
 werkzeug
 wtforms
 Pillow
+email-validator == 1.0.5
