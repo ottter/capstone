@@ -16,7 +16,6 @@
                 <a href="#menu">Menu</a>
             </nav>
         </header>
-		<!-- Nav -->
         <nav id="menu">
             <ul class="links">
                 <li><a href="{{ url_for('home') }}">Home</a></li>
@@ -38,8 +37,8 @@
             </ul>
         </nav>
 
-        <!-- Alerts -->
         <div class="inner">
+        <!-- Alerts -->
             {% with messages = get_flashed_messages(with_categories=true) %}
                 {% if messages %}
                     {% for category, message in messages %}
@@ -77,11 +76,12 @@
                 </div>
                 <div class="copyright">
                     Original Template: <a href="https://templated.co/">Templated</a>, Video: <a href="https://coverr.co">Coverr</a>.
+                    Each licensed under the Creative Commons Attribution 3.0 license
                 </div>
             </div>
         </footer>
 
-        <!-- Scripts -->
+        <!-- Don't worry, it's EASY! TWF5YmUgcmVnaXN0ZXIgYW4gYWNjb3VudCBmaXJzdD8= -->
         <script src="{{ url_for('static', filename='assets/js/jquery.min.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/browser.min.js') }}"></script>
         <script src="{{ url_for('static', filename='assets/js/breakpoints.min.js') }}"></script>

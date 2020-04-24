@@ -10,29 +10,66 @@
     <!-- Main -->
     <section id="main" class="wrapper">
         <div class="inner">
-            <div class="content">
-                <div class="about-description">
-                    <header>
-                        <h2>Why we are here</h2>
-                    </header>
-                    <p>This website was created by a group of Information Technology students with the goal of
-                        helping all MGA students. Here you can connect and collaborate with other students by
-                        sharing and studying notes taken by other students. Notes from all different courses and
-                        subjects can be easily uploaded and accessed here. Sign up with your MGA email and gain access
-                        to all of the features this site has to offer.</p>
-                </div><hr />
-                <header>
-                    <h2>How to Participate</h2>
-                </header>
-                <h4>
+                <h3 class="content">
+                    <a href="#acc">Website Details </a>  <strong>||</strong>
                     <a href="#acc">Account Creation </a>  <strong>||</strong>
                     <a href="#stu">Student Navigation </a>  <strong>||</strong>
                     <a href="#prof">Professor Navigation </a>  <strong>||</strong>
-                    <a href="#bts">Behind the Code </a>  <strong>||</strong>
-                    <a href="#oos">Future Plans </a>
-                </h4><hr>
+                    <a href="#bts">Behind the Code </a>
+                </h3>
+            <div id="acc" class="content">
+                <header>
+                    <h2>Why we are here</h2>
+                </header>
+                <p>I can't tell you how many times I've been sitting in class listening to a lecture, and for whatever
+                    reason, I lose my spot in the notes and missed something important. Whether a vocabulary term for
+                    an upcoming exam or a key line needed to understand a math algorithm, this just happens sometimes.
+                    Other times I will be at home studying and notice that I took poor notes the week before and it
+                    doesn't help me. What am I supposed to do next?</p>
+                <p>MGA Connect was created to fill this niche role by providing a hub for MGA students to go to and
+                    collaborate with their fellow classmates. By creating a database for personalized class notes, it
+                    simplifies the process for students to go and find those notes they are missing. Our mission is to
+                    provide an alternative option for students to work together where applicable to learn to the best
+                    of their ability.</p>
+                <header>
+                    <h2>Note to Professors</h2>
+                </header>
+                <p>MGA Connect is a completely voluntary service. Professors have the option to opt-out of their having
+                    class being available on database. We have a strict policy of not allowing quiz or exam answers and
+                    we do not allow students to upload content that is not their own. Everything available on our service
+                    is completely user-generated.</p>
+                <header>
+                    <h2>Future Plans for MGA Connect</h2>
+                </header>
+                <p>MGA Connect does not have every feature implemented in it's current state that is desired.
+                    before a full roll-out can be achieved, there are a small number of features and modifications
+                    that should be added to consider this ready for production. Several of these were considered
+                    out of scope features that go well beyond what was required for a fully functional website</p>
+                <ul>
+                    <li><strong>Database Improvements</strong> - In order to handle large amounts of user traffic,
+                        a better database implementation will be required. MGA Connect currently uses SQLite and the
+                        SQLAlchemy toolkit, which is sufficient for the Capstone project, but insufficient for larger
+                        usage.</li>
+                    <li><strong>Server Improvements</strong> - Similar to the previous item, this website is hosted
+                        on James' personal free Heroku account and that is <i>definitely</i> insufficient in a proper
+                        live environment.</li>
+                    <li><strong>Proper Permissions</strong> - The overall vision of this website involves a resource
+                        both students and professors find valuable. I feel like proper permissions for students which
+                        only allows them access to classrooms if they are currently enrolled in said class would help
+                        fit that goal.</li>
+                    <li><strong>Security Measures</strong> - The live version of MGA Connect allows practically
+                        anyone to create and access the website. This is purposeful for the scope of the Capstone
+                        project, but a feature in the future would see that users signing up would have to confirm
+                        their email before an account is created. There is a possibility this feature is added to
+                        a separate branch in my <a href="https://github.com/ottter/capstone">GitHub repository</a>
+                        that hosts the codebase for this website.</li>
+                </ul>
+                <p> Many, or even all, of the listed improvements above would be solved by implementing this website
+                    in to the MGA web ecosystem. With proper access to the professor and student database tables
+                    we would not need account creations and access permissions would be much more customizable than
+                    what is in place here.</p>
+                <hr />
                 <div class="about-videos">
-                    <p>insert text here</p>
                     <div id="acc" class="video">
                         <h3>Account Creation</h3>
                         <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
@@ -58,11 +95,6 @@
                                 <li>how the forms work within Flask</li>
                                 <li>how Python gets worked in to the standard HTML/CSS of web development</li>
                             </ul>
-                    </div><hr>
-                    <div id="oos" class="video">
-                        <h3>Future Plans for MGA Connect</h3>
-                        <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
-                        <p><br><strong>[name]</strong> talks about some of the future plans and out of scope goals for MGA Connect</p>
                     </div>
                 </div>
             </div>
