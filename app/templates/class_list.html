@@ -71,11 +71,8 @@
             <input type="text" id="myInput" onkeyup="mySearchFunction(3)" placeholder="Search by course name">
             <br>
             <table>
-                {% if current_user.has_role('admin') %}
-                    <col width="0">
-                {% endif %}
-                <col width="300"><col width="30"><col width="400"><col width="20">
                 <tr>
+                    <col width="0"><col width="100"><col width="30"><col width="400"><col width="20">
                     <th> </th>
                     <th>Program</th>
                     <th>Course ID</th>
