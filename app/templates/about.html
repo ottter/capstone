@@ -10,7 +10,7 @@
     <!-- Main -->
     <section id="main" class="wrapper">
         <div class="inner">
-                <h3 class="content">
+                <h3 id="top" class="content">
                     <a href="#acc">Website Details </a>  <strong>||</strong>
                     <a href="#acc">Account Creation </a>  <strong>||</strong>
                     <a href="#stu">Student Navigation </a>  <strong>||</strong>
@@ -53,41 +53,63 @@
                     <li><strong>Server Improvements</strong> - Similar to the previous item, this website is hosted
                         on James' personal free Heroku account and that is <i>definitely</i> insufficient in a proper
                         live environment.</li>
-                    <li><strong>Proper Permissions</strong> - The overall vision of this website involves a resource
+                    <li><strong>Proper Access Permissions</strong> - The overall vision of this website involves a resource
                         both students and professors find valuable. I feel like proper permissions for students which
                         only allows them access to classrooms if they are currently enrolled in said class would help
                         fit that goal.</li>
-                    <li><strong>Security Measures</strong> - The live version of MGA Connect allows practically
+                    <li><strong>Expanded Roles</strong> - A positive future addition would be expanding the roles in
+                        general. Having professors grouped by department and class, separating the "Admin" and "Professor"
+                        role to be more focused, and creating a "Moderator" role to flag content for admins to review would
+                        all be positive quality of life updates.</li>
+                    <li><strong>Account Security Measures</strong> - The live version of MGA Connect allows practically
                         anyone to create and access the website. This is purposeful for the scope of the Capstone
                         project, but a feature in the future would see that users signing up would have to confirm
                         their email before an account is created. There is a possibility this feature is added to
                         a separate branch in my <a href="https://github.com/ottter/capstone">GitHub repository</a>
                         that hosts the codebase for this website.</li>
+                    <li><strong>URL Security</strong> - There are a view instances of using incremental URLs or URLs
+                        that display some kind of information. Specifically, announcements URLs have an incremental
+                        naming convention and user profiles have their student ID as the URL. This is not a safe action
+                        for a production environment and is purely for the test environment. Any future additions would
+                        include user accounts to have a randomly generated string of numbers or hexadecimal that does
+                        not display personal information.</li>
                 </ul>
                 <p> Many, or even all, of the listed improvements above would be solved by implementing this website
                     in to the MGA web ecosystem. With proper access to the professor and student database tables
                     we would not need account creations and access permissions would be much more customizable than
                     what is in place here.</p>
+                <p id="#top" style="text-align: right"><a href="#top"><i class="fa fa-sort-up"></i> TOP</a></p>
                 <hr />
                 <div class="about-videos">
                     <div id="acc" class="video">
-                        <h3>Account Creation</h3>
+                        <h3><strong>Account Creation</strong></h3>
                         <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
                         <p><br>Here <strong>[name]</strong> demonstrates how to create an account with MGA Connect</p>
+                        <p id="#top" style="text-align: right"><a href="#top"><i class="fa fa-sort-up"></i> TOP</a></p>
                     </div><hr>
                     <div id="stu" class="video">
-                        <h3>Site Navigation for students</h3>
-                        <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
-                        <p><br>Here <strong>[name]</strong> demonstrates how a student would navigate around MGA Connect</p>
+                        <h3><strong>Site Navigation for students</strong></h3>
+                        <iframe src="https://www.youtube.com/embed/k7__4qcM7b4" frameborder="0" allowfullscreen></iframe>
+                        <p><br>Here <strong>James</strong> demonstrates how a student would navigate around MGA Connect.
+                        Students have the ability to read most of the website and download content by fellow students.
+                        This video demonstration shows how simple it is for a user to familiarize themselves with the
+                        website.</p>
+                        <p id="#top" style="text-align: right"><a href="#top"><i class="fa fa-sort-up"></i> TOP</a></p>
                     </div><hr>
                     <div id="prof" class="video">
-                        <h3>Site Navigation for professors</h3>
-                        <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
-                        <p><br>Here <strong>[name]</strong> demonstrates how a professor would navigate around MGA Connect</p>
+                        <h3><strong>Site Navigation for professors</strong></h3>
+                        <iframe src="https://www.youtube.com/embed/2plCdNxERhA" frameborder="0" allowfullscreen></iframe>
+                        <p><br>Here <strong>Reid</strong> demonstrates how a professor with administrator privileges would
+                            navigate around MGA Connect. Admins have special access to specific site features such as
+                            creating new classes and posting site announcements. These users are able to delete added
+                            classes and posts as well. Admin users have the ability to delete all notes from users as well
+                            so if a professor notices that someone uploaded disallowed content, they are able to quickly
+                            handle it themselves.</p>
+                        <p id="#top" style="text-align: right"><a href="#top"><i class="fa fa-sort-up"></i> TOP</a></p>
                     </div><hr>
                     <div id="bts" class="video">
-                        <h3>Take a look behind the pages</h3>
-                        <iframe src="https://www.youtube.com/embed/4A2mWqLUpzw" frameborder="0" allowfullscreen></iframe>
+                        <h3><strong>Take a look behind the pages</strong></h3>
+                        <iframe src="https://www.youtube.com/embed/VzoqTms6mFY" frameborder="1" allowfullscreen></iframe>
                         <p><br><strong>James</strong> goes over some of code that makes this website run. He quickly
                             goes over:</p>
                             <ul>
@@ -95,6 +117,11 @@
                                 <li>how the forms work within Flask</li>
                                 <li>how Python gets worked in to the standard HTML/CSS of web development</li>
                             </ul>
+                        <p><strong>Note from James:</strong>
+                        I'm not sure how relevant this is compared to purpose of the presentation, so this might just be
+                        considered an extra "because I can" video not counted towards anything. I was trying to keep it
+                        all under 10 minutes but I quickly ran out of time. </p>
+                        <p id="#top" style="text-align: right"><a href="#top"><i class="fa fa-sort-up"></i> TOP</a></p>
                     </div>
                 </div>
             </div>

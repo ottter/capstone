@@ -2895,6 +2895,7 @@ a.article-title:hover {
 .about-videos iframe{
   width: 85%;
   height: 60%;
+  border: 3px solid black;
 }
 
 .flex-container {

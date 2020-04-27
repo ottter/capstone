@@ -43,7 +43,6 @@ app.add_url_rule('/about', 'about', about)
 
 
 def classes():
-    # TODO: Find a more intuitive way to list classes
     academic_catalog = {'avia':'AVIA - Aviation', 'biol':'BIOL - Biology', 'engl': 'ENGL - English',
                         'itec': 'ITEC - Information Technology', 'hist': 'HIST - History', 'math': 'MATH - Mathematics',
                         'nurs': 'NURS - Nursing'
