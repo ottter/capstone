@@ -8,7 +8,7 @@ This project utilizes:
 * Gunicorn
 * Bcrypt
 
-# How to run
+## How to run
 
 1. `cd` in to the main directory
 2. `pip install -r requirements.txt`
@@ -18,5 +18,7 @@ This project utilizes:
 
 | Old Template (Boostrap)                             | New Template                                         |
 |-----------------------------------------------------|------------------------------------------------------|
-| ![Log In Old](http://puu.sh/F72nr/5fa4e15d63.png)   | ![Home New](https://puu.sh/FfDeU/a6671bc40f.jpg)     |
-| ![Register Old](http://puu.sh/F72nL/366efd50b7.png) | ![Register New](https://puu.sh/FfDf9/275c9d649e.jpg) |
+| ![Log In Old](static/GITHUB/old_login.png)   | ![Home New](static/GITHUB/new_home.jpg)     |
+| ![Register Old](static/GITHUB/old_register.png) | ![Register New](static/GITHUB/new_login.jpg) |
+
+## Website
