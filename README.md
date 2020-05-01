@@ -15,10 +15,19 @@ This project utilizes:
 3. (Optional) Change between development and production:<br> `set FLASK_ENV=development`
 4. `flask run`
 
+## Rework
 
-| Old Template (Boostrap)                             | New Template                                         |
+| Original Template (Boostrap)                             | New Template                                         |
 |-----------------------------------------------------|------------------------------------------------------|
-| ![Log In Old](static/GITHUB/old_login.png)   | ![Home New](static/GITHUB/new_home.jpg)     |
-| ![Register Old](static/GITHUB/old_register.png) | ![Register New](static/GITHUB/new_login.jpg) |
+| ![Log In Old](app/static/GITHUB/old_login.png)   | ![Home New](app/static/GITHUB/new_home.jpg)     |
+| ![Register Old](app/static/GITHUB/old_register.png) | ![Register New](app/static/GITHUB/new_register.jpg) |
 
-## Website
+## Final Version
+
+Example of the user's profile page, including what it looks like to have uploaded content:
+
+![Profile](app/static/GITHUB/profile.jpg)
+
+Admin view for adding a class:
+
+![Classlist](app/static/GITHUB/classlist.jpg)
